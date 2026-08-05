@@ -1,0 +1,102 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build
+.next/
+out/
+build/
+dist/
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel
+
+# Local settings (not project config)
+.claude/settings.local.json
+
+# User-specific skills (not part of the template)
+.claude/skills/customize/
+.claude/skills/release/
+
+# Local temp files
+temp/
+
+# AI-agent scaffolding from upstream template (not needed for deploy)
+.aider.conf.yml
+.amazonq/
+.augment/
+.claude/
+.clinerules
+.codex/
+.continue/
+.cursor/
+.gemini/
+.opencode/
+.windsurf/
+.windsurfrules
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+
+# Research caches / heavy extracts (keep docs/research/*.md only via care)
+docs/research/bundles/
+docs/design-references/
+
+# Non-core research dumps (TrueAI clone leftovers)
+docs/research/*.html
+docs/research/*.json
+docs/research/*.txt
+docs/research/ACCESS_NOTES.md
+docs/research/BEHAVIORS.md
+docs/research/INSPECTION_GUIDE.md
+docs/research/PAGE_TOPOLOGY.md
+
+# Unused True AI Hub marketing images
+public/images/app-icon.png
+public/images/app-screen-*.jpg
+public/images/feature-true-ai-hub.jpg
+public/images/hero-true-ai-hub.jpg
+public/images/logo-single.svg
+public/images/vodacom-logo-candidate.svg
+
+# Upstream template GitHub chrome
+.github/FUNDING.yml
+.github/ISSUE_TEMPLATE/
+.github/PULL_REQUEST_TEMPLATE.md
+.github/copilot-instructions.md
+.github/copilot-setup-steps.yml
+.github/skills/
+CHANGELOG.md
+
+# Upstream clone tooling (not needed for Vodacom demo deploy)
+scripts/recon-trueaihub.mjs
+scripts/sync-agent-rules.sh
+scripts/sync-skills.mjs
+scripts/extract-packages.mjs
