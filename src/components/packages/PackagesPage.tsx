@@ -45,6 +45,7 @@ export function PackagesPage({
               alt="Vodacom AI"
               width={160}
               height={36}
+              style={{ width: "auto", height: "auto" }}
               priority
             />
           </Link>
@@ -110,8 +111,6 @@ export function PackagesPage({
             .
           </p>
           <p className="mx-auto mt-3 max-w-2xl text-[11px] leading-relaxed text-muted-foreground/90">
-            本页面为华为云提供的 Demo 环境，以上设计仅供 Vodacom 客户参考。
-            <br className="hidden sm:block" />
             Huawei Cloud demo environment — designs above are for Vodacom
             customer reference only (not an official Vodacom product).
           </p>
@@ -216,10 +215,12 @@ export function PackagesPage({
               alt="Vodacom AI"
               width={140}
               height={32}
+              style={{ width: "auto", height: "auto" }}
             />
             <p className="mt-2 max-w-md text-xs text-muted-foreground">
-              华为云 Demo 环境 · 设计仅供 Vodacom 客户参考 · No payment / backend
-              connected.
+              Huawei Cloud demo environment. Designs are for Vodacom customer
+              reference only — not an official Vodacom product. No payment or
+              backend connected.
             </p>
           </div>
           <Link

@@ -24,7 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${montserrat.variable} h-full`}>
+    <html
+      lang="en"
+      className={`${montserrat.variable} h-full`}
+      data-scroll-behavior="smooth"
+    >
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

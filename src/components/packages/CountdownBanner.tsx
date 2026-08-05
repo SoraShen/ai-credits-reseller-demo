@@ -25,9 +25,8 @@ function Cell({ value, label }: { value: number; label: string }) {
 }
 
 export function CountdownBanner({ params }: { params: PricingParams }) {
-  const [left, setLeft] = useState(() =>
-    new Date(params.promoEndsAt).getTime() - Date.now()
-  );
+  // null until mount — avoids SSR/client second mismatch (Next.js Issue badge)
+  const [left, setLeft] = useState<number | null>(null);
 
   useEffect(() => {
     const tick = () =>
@@ -37,9 +36,9 @@ export function CountdownBanner({ params }: { params: PricingParams }) {
     return () => clearInterval(id);
   }, [params.promoEndsAt]);
 
-  const p = parts(left);
-  const active = left > 0;
   const off = Math.round((1 - params.promoDiscount) * 100);
+  const active = left === null || left > 0;
+  const p = left == null ? null : parts(left);
 
   return (
     <div className="bg-[#e60000] text-white">
@@ -57,12 +56,20 @@ export function CountdownBanner({ params }: { params: PricingParams }) {
         {active ? (
           <div className="flex items-center gap-1.5 text-[12px]">
             <span className="opacity-90">Ends in</span>
-            {p.d > 0 ? <Cell value={p.d} label="Day" /> : null}
-            <Cell value={p.h} label="Hr" />
-            <span className="font-bold opacity-70">:</span>
-            <Cell value={p.m} label="Min" />
-            <span className="font-bold opacity-70">:</span>
-            <Cell value={p.s} label="Sec" />
+            {p == null ? (
+              <span className="inline-flex min-w-[8rem] justify-center font-mono text-sm font-bold tabular-nums opacity-70">
+                -- : -- : --
+              </span>
+            ) : (
+              <>
+                {p.d > 0 ? <Cell value={p.d} label="Day" /> : null}
+                <Cell value={p.h} label="Hr" />
+                <span className="font-bold opacity-70">:</span>
+                <Cell value={p.m} label="Min" />
+                <span className="font-bold opacity-70">:</span>
+                <Cell value={p.s} label="Sec" />
+              </>
+            )}
           </div>
         ) : null}
       </div>
