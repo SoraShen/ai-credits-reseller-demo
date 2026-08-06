@@ -1,75 +1,89 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useRef, useSyncExternalStore } from "react";
 
 export const PARTNER_VIEW_KEY = "vodacom-partner-view";
 
-/**
- * Hidden switch between end-customer storefront and Vodacom-partner preview.
- * Unlock: Alt+Shift+P, or 5× click the demo disclaimer.
- */
-export function usePartnerView() {
-  const [unlocked, setUnlocked] = useState(false);
-  const [partnerView, setPartnerView] = useState(false);
-  const [clicks, setClicks] = useState(0);
+interface PartnerState {
+  unlocked: boolean;
+  partnerView: boolean;
+}
 
-  useEffect(() => {
+const SERVER_STATE: PartnerState = { unlocked: false, partnerView: false };
+
+let snapshot: PartnerState = SERVER_STATE;
+let hydrated = false;
+const listeners = new Set<() => void>();
+
+function publish(next: PartnerState) {
+  snapshot = next;
+  for (const listener of listeners) listener();
+}
+
+function write(next: PartnerState) {
+  try {
+    localStorage.setItem(PARTNER_VIEW_KEY, next.partnerView ? "1" : "0");
+  } catch {
+    /* private mode — session-only toggle is fine */
+  }
+  publish(next);
+}
+
+function onKey(e: KeyboardEvent) {
+  if (e.altKey && e.shiftKey && e.key.toLowerCase() === "p") {
+    e.preventDefault();
+    write({ unlocked: true, partnerView: !snapshot.partnerView });
+  }
+}
+
+function subscribe(listener: () => void) {
+  if (!hydrated) {
+    hydrated = true;
     try {
       const raw = localStorage.getItem(PARTNER_VIEW_KEY);
       if (raw === "1" || raw === "0") {
-        setUnlocked(true);
-        setPartnerView(raw === "1");
+        snapshot = { unlocked: true, partnerView: raw === "1" };
       }
     } catch {
       /* ignore */
     }
-  }, []);
+  }
+  if (listeners.size === 0) window.addEventListener("keydown", onKey);
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0) window.removeEventListener("keydown", onKey);
+  };
+}
 
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (e.altKey && e.shiftKey && e.key.toLowerCase() === "p") {
-        e.preventDefault();
-        setUnlocked(true);
-        setPartnerView((v) => {
-          const next = !v;
-          try {
-            localStorage.setItem(PARTNER_VIEW_KEY, next ? "1" : "0");
-          } catch {
-            /* ignore */
-          }
-          return next;
-        });
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+/**
+ * Hidden switch between the end-customer storefront and the Vodacom-partner
+ * preview. Unlock with Alt+Shift+P, or 5 clicks on the demo disclaimer.
+ */
+export function usePartnerView() {
+  const state = useSyncExternalStore(
+    subscribe,
+    () => snapshot,
+    () => SERVER_STATE
+  );
+  const clicks = useRef(0);
 
-  const persist = useCallback((next: boolean) => {
-    setPartnerView(next);
-    setUnlocked(true);
-    try {
-      localStorage.setItem(PARTNER_VIEW_KEY, next ? "1" : "0");
-    } catch {
-      /* ignore */
-    }
+  const setPartnerView = useCallback((next: boolean) => {
+    write({ unlocked: true, partnerView: next });
   }, []);
 
   const registerSecretClick = useCallback(() => {
-    setClicks((c) => {
-      const n = c + 1;
-      if (n >= 5) {
-        setUnlocked(true);
-        return 0;
-      }
-      return n;
-    });
+    clicks.current += 1;
+    if (clicks.current >= 5) {
+      clicks.current = 0;
+      publish({ ...snapshot, unlocked: true });
+    }
   }, []);
 
   return {
-    unlocked,
-    partnerView,
-    setPartnerView: persist,
+    unlocked: state.unlocked,
+    partnerView: state.partnerView,
+    setPartnerView,
     registerSecretClick,
   };
 }

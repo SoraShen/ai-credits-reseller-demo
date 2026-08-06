@@ -11,7 +11,9 @@ import {
   formatZar,
   marginAtDiscount,
   safetyOk,
-  unitPricePer1M,
+  formatPct,
+  formatZarPrecise,
+  planPricing,
 } from "@/lib/pricing/formulas";
 import { COPY, PHILOSOPHY, type Lang } from "@/lib/pricing/i18n";
 import { applyTemplate } from "@/lib/pricing/storage";
@@ -79,7 +81,7 @@ export function PricingStudio() {
     });
   }
 
-  function useTemplate(id: "A" | "B") {
+  function selectTemplate(id: "A" | "B") {
     const next = applyTemplate(id);
     update(next);
     setToast(true);
@@ -189,7 +191,7 @@ export function PricingStudio() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => useTemplate(id)}
+                  onClick={() => selectTemplate(id)}
                   className="btn-vodacom mt-4 rounded-full px-4 py-2 text-sm font-bold"
                 >
                   {t.select}
@@ -228,6 +230,22 @@ export function PricingStudio() {
                 />
               </label>
             ))}
+            <label className="flex items-start gap-2 text-sm sm:col-span-2 lg:col-span-3">
+              <input
+                type="checkbox"
+                className="mt-1 size-4 accent-[#e60000]"
+                checked={state.params.promoStacksOnAnnual === true}
+                onChange={(e) =>
+                  patchParams({ promoStacksOnAnnual: e.target.checked })
+                }
+              />
+              <span>
+                <span className="font-medium">{t.promoStack}</span>
+                <span className="block text-xs text-muted-foreground">
+                  {t.promoStackHint}
+                </span>
+              </span>
+            </label>
             <label className="text-sm sm:col-span-2 lg:col-span-3">
               <span className="font-medium text-muted-foreground">
                 {t.promoEnds}
@@ -333,6 +351,7 @@ export function PricingStudio() {
             title={t.personal}
             rows={personal}
             discount={state.params.promoDiscount}
+            stacksOnAnnual={state.params.promoStacksOnAnnual === true}
             onChange={patchPackage}
             labels={t}
           />
@@ -340,6 +359,7 @@ export function PricingStudio() {
             title={t.business}
             rows={business}
             discount={state.params.promoDiscount}
+            stacksOnAnnual={state.params.promoStacksOnAnnual === true}
             onChange={patchPackage}
             labels={t}
           />
@@ -516,12 +536,14 @@ function PackageTable({
   title,
   rows,
   discount,
+  stacksOnAnnual,
   onChange,
   labels,
 }: {
   title: string;
   rows: PackageRow[];
   discount: number;
+  stacksOnAnnual: boolean;
   onChange: (id: string, partial: Partial<PackageRow>) => void;
   labels: (typeof COPY)[Lang];
 }) {
@@ -538,12 +560,16 @@ function PackageTable({
               <th className="py-2 pr-2 font-semibold">{labels.colCredits}</th>
               <th className="py-2 pr-2 font-semibold">{labels.colDesignGm}</th>
               <th className="py-2 pr-2 font-semibold">{labels.colPromoGm}</th>
+              <th className="py-2 pr-2 font-semibold">{labels.colYearlyGm}</th>
               <th className="py-2 font-semibold">{labels.colUnit}</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((p) => {
               const promo = marginAtDiscount(p, discount);
+              const opts = { promoStacksOnAnnual: stacksOnAnnual };
+              const monthlyPlan = planPricing(p, "monthly", discount, opts);
+              const yearlyPlan = planPricing(p, "yearly", discount, opts);
               return (
                 <tr key={p.id} className="border-b border-border/70 align-top">
                   <td className="py-2 pr-2 font-medium">{p.name}</td>
@@ -591,8 +617,24 @@ function PackageTable({
                       {formatZar(promo.profit)}
                     </div>
                   </td>
+                  <td
+                    className={cn(
+                      "py-2 pr-2 tabular-nums",
+                      yearlyPlan.effectiveMargin < 0.15
+                        ? "text-[#e60000]"
+                        : "text-[#0b7a3e]"
+                    )}
+                  >
+                    {formatPct(yearlyPlan.effectiveMargin, 1)}
+                    <div className="text-[11px] text-muted-foreground">
+                      {formatZar(yearlyPlan.payMonthly)}/mo eff.
+                    </div>
+                  </td>
                   <td className="py-2 tabular-nums">
-                    {formatZar(unitPricePer1M(p))}
+                    {formatZarPrecise(monthlyPlan.unitPer1M)}
+                    <div className="text-[11px] text-muted-foreground">
+                      yr {formatZarPrecise(yearlyPlan.unitPer1M)}
+                    </div>
                   </td>
                 </tr>
               );

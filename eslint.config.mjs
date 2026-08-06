@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored site dumps captured during research — not our source.
+    "docs/research/**",
+    "scripts/recon-trueaihub.mjs",
   ]),
 ]);
 

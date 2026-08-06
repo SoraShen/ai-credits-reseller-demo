@@ -9,6 +9,11 @@ export interface PricingParams {
   minDiscount: number; // d_min, e.g. 0.72
   /** Early-bird / limited promo discount applied on storefront (1 = none) */
   promoDiscount: number;
+  /**
+   * Whether the promo stacks on annual plans. Annual list prices already carry
+   * the annual saving, so stacking usually breaks the margin floor.
+   */
+  promoStacksOnAnnual: boolean;
   promoEndsAt: string; // ISO
   promoLabelEn: string;
   promoLabelZh: string;
@@ -36,7 +41,7 @@ export interface PackageRow {
   audience: Audience;
   monthlyPrice: number;
   yearlyPrice: number;
-  yearlyDiscountLabel: string;
+  /** Monthly Credit quota; a yearly plan releases this 12 times. */
   credits: number;
   tiers: Array<1 | 2 | 3>;
   designMargin: number; // 0.32 = 32%
@@ -63,12 +68,20 @@ export interface StorefrontPlan {
   currency: string;
   period: string;
   credits: number;
+  periodCredits: number;
   creditsLabel: string;
+  creditsSubLabel?: string;
   discountLabel?: string;
+  savingsLabel?: string;
+  monthlyEquivalentLabel?: string;
   bonusLabel?: string;
   cta: string;
   popular?: boolean;
+  /** Partner-only: design margin at list price. */
   marginLabel: string;
+  /** Partner-only: realised margin at the price actually charged. */
+  effectiveMarginLabel: string;
+  effectiveMargin: number;
   unitPriceLabel: string;
   tiersLabel: string;
   features: string[];

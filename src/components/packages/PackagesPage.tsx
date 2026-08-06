@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Menu, X } from "lucide-react";
 import type { Audience, Billing } from "@/lib/pricing/types";
+import { annualSaving, formatPct } from "@/lib/pricing/formulas";
 import { toStorefrontPlans } from "@/lib/pricing/storage";
 import { usePricingState } from "@/hooks/usePricingState";
 import { usePartnerView } from "@/hooks/usePartnerView";
@@ -28,6 +29,17 @@ export function PackagesPage({
     () => (ready ? toStorefrontPlans(state, audience, billing) : []),
     [state, audience, billing, ready]
   );
+
+  const annualSavingLabel = useMemo(() => {
+    const rows = state.packages.filter((p) => p.audience === audience);
+    const savings = rows.map(annualSaving).filter((s) => s > 0);
+    if (!savings.length) return null;
+    const lo = Math.min(...savings);
+    const hi = Math.max(...savings);
+    return Math.round(lo * 100) === Math.round(hi * 100)
+      ? `Save ${formatPct(hi)}`
+      : `Save ${formatPct(lo)}–${formatPct(hi)}`;
+  }, [state.packages, audience]);
 
   const templateLabel =
     state.templateId === "A"
@@ -220,9 +232,11 @@ export function PackagesPage({
           >
             Yearly
           </span>
-          <span className="rounded-full bg-[#e8f8ef] px-2 py-0.5 text-[11px] font-bold text-[#0b7a3e]">
-            Save 24–30%
-          </span>
+          {annualSavingLabel ? (
+            <span className="rounded-full bg-[#e8f8ef] px-2 py-0.5 text-[11px] font-bold text-[#0b7a3e]">
+              {annualSavingLabel}
+            </span>
+          ) : null}
         </div>
 
         <div
@@ -251,7 +265,8 @@ export function PackagesPage({
           </p>
           {billing === "yearly" ? (
             <p className="mt-2 text-xs text-muted-foreground">
-              *Yearly plans still grant monthly Credit quotas; billed annually.
+              Yearly plans are billed once and release the same monthly Credit
+              quota each month for 12 months.
             </p>
           ) : null}
         </div>
@@ -259,15 +274,26 @@ export function PackagesPage({
         {partnerView ? (
           <div className="mt-6 rounded-[1.5rem] border border-[#1a1a1a]/15 bg-[#f6f7f9] px-5 py-4 text-sm text-muted-foreground">
             <p className="font-bold text-foreground">
-              What “Gross Margin” means (partner only)
+              Reading the partner numbers
             </p>
-            <p className="mt-1">
-              Design Gross Margin is the planned profit share after estimated
-              Huawei MaaS cost at list price — e.g. 34% GM means ~R0.66 of each
-              Rand of package revenue is reserved for model cost / ops, ~R0.34
-              is margin. It is an internal Vodacom planning metric, not a
-              consumer-facing claim.
-            </p>
+            <ul className="mt-1 list-disc space-y-1 pl-5">
+              <li>
+                <strong>Design GM</strong> is the planned profit share after
+                estimated Huawei MaaS cost at monthly list price — 35% GM means
+                ~R0.65 of every Rand of revenue is reserved for model cost and
+                ops.
+              </li>
+              <li>
+                <strong>GM at this price</strong> is the same margin recomputed
+                on what the customer actually pays this period, so promo and
+                annual discounts show up here. Red means it fell under 15%.
+              </li>
+              <li>
+                Annual plans divide the once-off price by 12 before comparing to
+                monthly cost. Both figures are Vodacom planning metrics, never
+                consumer-facing claims.
+              </li>
+            </ul>
           </div>
         ) : null}
       </main>

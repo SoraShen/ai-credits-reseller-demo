@@ -36,7 +36,6 @@ export function CountdownBanner({ params }: { params: PricingParams }) {
     return () => clearInterval(id);
   }, [params.promoEndsAt]);
 
-  const off = Math.round((1 - params.promoDiscount) * 100);
   const active = left === null || left > 0;
   const p = left == null ? null : parts(left);
 
@@ -47,7 +46,7 @@ export function CountdownBanner({ params }: { params: PricingParams }) {
           ⚡ {params.promoLabelEn}
           {active ? (
             <span className="ml-2 rounded-full bg-white/20 px-2 py-0.5 text-[11px]">
-              {off}% Off
+              Annual plans keep their own saving
             </span>
           ) : (
             <span className="ml-2 text-[11px] opacity-90">Ended</span>

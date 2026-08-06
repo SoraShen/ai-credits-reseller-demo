@@ -49,8 +49,12 @@ export const COPY = {
     colYearly: "Yearly",
     colCredits: "Credits",
     colDesignGm: "Design GM",
-    colPromoGm: "Promo GM",
-    colUnit: "R / 1M",
+    promoStack: "Stack the promo on annual plans",
+    promoStackHint:
+      "Off by default: annual list prices already carry the annual saving, so stacking a launch promo on top can push annual gross margin below zero. Toggle it to see the damage in the Promo GM (annual) column.",
+    colPromoGm: "Promo GM (monthly)",
+    colYearlyGm: "Promo GM (annual)",
+    colUnit: "R / 1M Credits",
     colDiscount: "Discount",
     colBonus: "Bonus",
     colGift: "Gift %",
@@ -124,7 +128,11 @@ export const COPY = {
     colYearly: "年付",
     colCredits: "Credits",
     colDesignGm: "设计毛利",
-    colPromoGm: "折后毛利",
+    promoStack: "促销折扣叠加到年付套餐",
+    promoStackHint:
+      "默认关闭：年付标价本身已含年付优惠，再叠加上线促销会把年付毛利压到负数。可以打开开关，在“折后毛利（年付）”列直接看到后果。",
+    colPromoGm: "折后毛利（月付）",
+    colYearlyGm: "折后毛利（年付）",
     colUnit: "兰特/百万Credits",
     colDiscount: "折扣率",
     colBonus: "Bonus 类型",
@@ -164,15 +172,15 @@ export const PHILOSOPHY = {
     },
     {
       t: "双轨套餐覆盖全客群",
-      d: "个人 R69–R899，企业席位 R199–R1,399；年付锁定长期用户。",
+      d: "个人四档、企业三档席位，每档单价（兰特/百万 Credits）随档位递减；年付按 12 个月额度计价，单价必须优于月付。",
     },
     {
       t: "汇率防火墙（对终端）",
-      d: "前台只展示兰特标价与 Credits 额度；美元成本与汇率由运营商在批发侧消化，用户账单不随汇率跳动。",
+      d: "前台只展示兰特标价与 Credits 额度。汇率红利与风险由谁承担是一个显式选择（见第 6 节），但无论选哪种，用户账单都不随美元跳动。",
     },
     {
-      t: "折扣与 Bonus 双轮驱动",
-      d: "折扣拉新促单；Bonus 增价值留存，不直接侵蚀标价。",
+      t: "折扣不叠加",
+      d: "促销只作用于月付；年付标价本身已含年付优惠。叠加会击穿毛利下限，Bonus 用于留存而不侵蚀标价。",
     },
     {
       t: "利润安全边际",
@@ -190,15 +198,15 @@ export const PHILOSOPHY = {
     },
     {
       t: "Dual-track packages",
-      d: "Individual R69–R899; Team seats R199–R1,399; annual locks retention.",
+      d: "Four individual tiers and three team seats, with R / 1M Credits falling as you climb. Annual is priced against 12 monthly quotas, so its unit price must beat monthly.",
     },
     {
       t: "Currency firewall (for end users)",
-      d: "Storefront shows Rand prices and Credits only. USD wholesale cost & FX are absorbed by the operator — bills stay FX-stable.",
+      d: "Storefront shows Rand prices and Credits only. Who owns the FX upside and downside is an explicit design choice (§6) — either way the subscriber's bill never moves with the dollar.",
     },
     {
-      t: "Discount + Bonus",
-      d: "Discounts for acquisition; Bonus Credits for retention without repricing.",
+      t: "Discounts do not stack",
+      d: "Promo applies to monthly; annual list prices already carry the annual saving. Stacking breaks the margin floor. Bonus Credits drive retention without repricing.",
     },
     {
       t: "Profit safety margin",

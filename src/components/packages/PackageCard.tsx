@@ -53,16 +53,38 @@ export function PackageCard({
           </span>
           <span className="mb-1 text-sm text-muted-foreground">{plan.period}</span>
         </div>
+        {plan.monthlyEquivalentLabel ? (
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {plan.monthlyEquivalentLabel}
+          </p>
+        ) : null}
         <p className="mt-1 text-xs text-muted-foreground">
           {plan.unitPriceLabel}
-          {partnerView ? (
-            <span className="text-[#e60000]"> · {plan.marginLabel}</span>
-          ) : null}
         </p>
+        {plan.savingsLabel ? (
+          <p className="mt-1 inline-flex rounded-full bg-[#e8f8ef] px-2 py-0.5 text-[11px] font-bold text-[#0b7a3e]">
+            {plan.savingsLabel}
+          </p>
+        ) : null}
+        {partnerView ? (
+          <p
+            className={cn(
+              "mt-2 rounded-lg bg-[#1a1a1a]/5 px-2 py-1 text-[11px] font-semibold",
+              plan.effectiveMargin < 0.15 ? "text-[#e60000]" : "text-[#0b7a3e]"
+            )}
+          >
+            {plan.marginLabel} · {plan.effectiveMarginLabel}
+          </p>
+        ) : null}
       </div>
 
       <div className="mt-3 rounded-2xl bg-[#fff1f1] px-3 py-2">
         <p className="text-sm font-semibold text-[#e60000]">{plan.creditsLabel}</p>
+        {plan.creditsSubLabel ? (
+          <p className="text-[11px] font-medium text-[#e60000]/80">
+            {plan.creditsSubLabel}
+          </p>
+        ) : null}
         <p className="text-[11px] text-muted-foreground">
           Priced in Rand — no FX surprise on your bill
         </p>

@@ -2,12 +2,14 @@ import type { Audience, Billing, PricingState, StorefrontPlan } from "./types";
 import { DEFAULT_STATE, HUAWEI_MAAS_MODELS, templateState } from "./templates";
 import {
   formatCredits,
+  formatPct,
   formatZar,
+  formatZarPrecise,
+  planPricing,
   tiersLabel,
-  unitPricePer1M,
 } from "./formulas";
 
-export const STORAGE_KEY = "vodacom-ai-pricing-state-v3";
+export const STORAGE_KEY = "vodacom-ai-pricing-state-v4";
 
 function withFreshModels(state: PricingState): PricingState {
   const needsModelRefresh =
@@ -32,7 +34,10 @@ export function loadPricingState(): PricingState {
     if (!raw) return DEFAULT_STATE;
     const parsed = JSON.parse(raw) as PricingState;
     if (!parsed?.params || !parsed?.packages?.length) return DEFAULT_STATE;
-    return withFreshModels(parsed);
+    return withFreshModels({
+      ...parsed,
+      params: { ...DEFAULT_STATE.params, ...parsed.params },
+    });
   } catch {
     return DEFAULT_STATE;
   }
@@ -62,36 +67,53 @@ export function toStorefrontPlans(
   return state.packages
     .filter((p) => p.audience === audience)
     .map((p) => {
-      const monthlyPromo = Math.round(p.monthlyPrice * d);
-      const yearlyPromo = Math.round(p.yearlyPrice * d);
-      const unit = unitPricePer1M(p);
+      const opts = {
+        promoStacksOnAnnual: state.params.promoStacksOnAnnual === true,
+      };
+      const pricing = planPricing(p, billing, d, opts);
+      const yearlyPricing = planPricing(p, "yearly", d, opts);
+      const yearly = billing === "yearly";
+
       return {
         id: p.id,
         name: p.name,
-        price: billing === "yearly" ? yearlyPromo : monthlyPromo,
-        priceOriginal: billing === "yearly" ? p.yearlyPrice : p.monthlyPrice,
-        priceYearly: yearlyPromo,
+        price: pricing.payPeriod,
+        priceOriginal: pricing.listPeriod,
+        priceYearly: yearlyPricing.payPeriod,
         priceYearlyOriginal: p.yearlyPrice,
         currency: "R",
         period:
           audience === "business"
-            ? billing === "yearly"
+            ? yearly
               ? "per seat / year"
               : "per seat / month"
-            : billing === "yearly"
+            : yearly
               ? "per year"
               : "per month",
         credits: p.credits,
-        creditsLabel: `${formatCredits(p.credits)} Credits / ${
-          billing === "yearly" ? "Month*" : "Month"
-        }`,
+        periodCredits: pricing.periodCredits,
+        creditsLabel: `${formatCredits(p.credits)} Credits / month`,
+        creditsSubLabel: yearly
+          ? `${formatCredits(pricing.periodCredits)} Credits over 12 months`
+          : undefined,
         discountLabel:
-          d < 1 ? `${Math.round((1 - d) * 100)}% Off` : undefined,
+          pricing.promoOff > 0.0001
+            ? `${formatPct(pricing.promoOff)} Off`
+            : undefined,
+        savingsLabel:
+          yearly && pricing.totalOffVsMonthly > 0.0001
+            ? `Save ${formatPct(pricing.totalOffVsMonthly)} vs monthly`
+            : undefined,
+        monthlyEquivalentLabel: yearly
+          ? `≈ ${formatZar(pricing.payMonthly)} / month`
+          : undefined,
         bonusLabel: undefined,
         cta: p.cta,
         popular: p.popular,
-        marginLabel: `${Math.round(p.designMargin * 100)}% Gross Margin`,
-        unitPriceLabel: `${formatZar(unit)} / 1M Credits`,
+        marginLabel: `${formatPct(p.designMargin)} design GM`,
+        effectiveMarginLabel: `${formatPct(pricing.effectiveMargin, 1)} GM at this price`,
+        effectiveMargin: pricing.effectiveMargin,
+        unitPriceLabel: `${formatZarPrecise(pricing.unitPer1M)} / 1M Credits`,
         tiersLabel: tiersLabel(p.tiers),
         features: p.features,
         models: p.models,
