@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 import type { Audience, Billing } from "@/lib/pricing/types";
 import { toStorefrontPlans } from "@/lib/pricing/storage";
 import { usePricingState } from "@/hooks/usePricingState";
+import { usePartnerView } from "@/hooks/usePartnerView";
 import { cn } from "@/lib/utils";
 import { CountdownBanner } from "./CountdownBanner";
 import { PackageCard } from "./PackageCard";
@@ -17,6 +18,8 @@ export function PackagesPage({
   initialAudience?: Audience;
 }) {
   const { state, ready } = usePricingState();
+  const { unlocked, partnerView, setPartnerView, registerSecretClick } =
+    usePartnerView();
   const [audience, setAudience] = useState<Audience>(initialAudience);
   const [billing, setBilling] = useState<Billing>("monthly");
   const [openNav, setOpenNav] = useState(false);
@@ -36,6 +39,20 @@ export function PackagesPage({
   return (
     <div className="page-wash min-h-screen">
       <CountdownBanner params={state.params} />
+
+      {unlocked && partnerView ? (
+        <div className="bg-[#1a1a1a] px-4 py-2 text-center text-[11px] font-semibold text-white">
+          Partner preview — Gross Margin & internal cost metrics visible. End
+          customers do not see this.{" "}
+          <button
+            type="button"
+            className="underline"
+            onClick={() => setPartnerView(false)}
+          >
+            Switch to customer view
+          </button>
+        </div>
+      ) : null}
 
       <header className="sticky top-0 z-50 border-b border-border/80 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -63,9 +80,25 @@ export function PackagesPage({
           </nav>
 
           <div className="hidden items-center gap-3 md:flex">
-            <span className="rounded-full border border-border px-3 py-1.5 text-[11px] font-semibold text-muted-foreground">
-              {templateLabel}
-            </span>
+            {unlocked ? (
+              <button
+                type="button"
+                onClick={() => setPartnerView(!partnerView)}
+                className={cn(
+                  "rounded-full px-3 py-1.5 text-[11px] font-bold",
+                  partnerView
+                    ? "bg-[#1a1a1a] text-white"
+                    : "border border-border text-muted-foreground"
+                )}
+              >
+                {partnerView ? "Partner view" : "Customer view"}
+              </button>
+            ) : null}
+            {partnerView ? (
+              <span className="rounded-full border border-border px-3 py-1.5 text-[11px] font-semibold text-muted-foreground">
+                {templateLabel}
+              </span>
+            ) : null}
             <button
               type="button"
               className="rounded-full border border-[#e60000] px-4 py-2 text-sm font-bold text-[#e60000]"
@@ -91,6 +124,15 @@ export function PackagesPage({
             <Link href="/pricing-studio" className="block text-sm font-medium">
               Pricing Studio
             </Link>
+            {unlocked ? (
+              <button
+                type="button"
+                className="block text-sm font-medium"
+                onClick={() => setPartnerView(!partnerView)}
+              >
+                {partnerView ? "Partner view ✓" : "Customer view"}
+              </button>
+            ) : null}
           </div>
         ) : null}
       </header>
@@ -104,13 +146,17 @@ export function PackagesPage({
             Choose Your Package
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
-            USD-anchored Credits sold in ZAR. Switch templates anytime in{" "}
+            Simple Rand pricing for AI Credits. Configure wholesale logic in{" "}
             <Link href="/pricing-studio" className="font-semibold text-[#e60000]">
               Pricing Studio
             </Link>
             .
           </p>
-          <p className="mx-auto mt-3 max-w-2xl text-[11px] leading-relaxed text-muted-foreground/90">
+          <p
+            className="mx-auto mt-3 max-w-2xl cursor-default text-[11px] leading-relaxed text-muted-foreground/90"
+            onClick={registerSecretClick}
+            title="Demo disclaimer"
+          >
             Huawei Cloud demo environment — designs above are for Vodacom
             customer reference only (not an official Vodacom product).
           </p>
@@ -188,7 +234,11 @@ export function PackagesPage({
           )}
         >
           {plans.map((plan) => (
-            <PackageCard key={plan.id} plan={plan} />
+            <PackageCard
+              key={plan.id}
+              plan={plan}
+              partnerView={partnerView}
+            />
           ))}
         </div>
 
@@ -205,6 +255,21 @@ export function PackagesPage({
             </p>
           ) : null}
         </div>
+
+        {partnerView ? (
+          <div className="mt-6 rounded-[1.5rem] border border-[#1a1a1a]/15 bg-[#f6f7f9] px-5 py-4 text-sm text-muted-foreground">
+            <p className="font-bold text-foreground">
+              What “Gross Margin” means (partner only)
+            </p>
+            <p className="mt-1">
+              Design Gross Margin is the planned profit share after estimated
+              Huawei MaaS cost at list price — e.g. 34% GM means ~R0.66 of each
+              Rand of package revenue is reserved for model cost / ops, ~R0.34
+              is margin. It is an internal Vodacom planning metric, not a
+              consumer-facing claim.
+            </p>
+          </div>
+        ) : null}
       </main>
 
       <footer className="border-t border-border bg-white">
@@ -217,7 +282,10 @@ export function PackagesPage({
               height={32}
               style={{ width: "auto", height: "auto" }}
             />
-            <p className="mt-2 max-w-md text-xs text-muted-foreground">
+            <p
+              className="mt-2 max-w-md cursor-default text-xs text-muted-foreground"
+              onClick={registerSecretClick}
+            >
               Huawei Cloud demo environment. Designs are for Vodacom customer
               reference only — not an official Vodacom product. No payment or
               backend connected.

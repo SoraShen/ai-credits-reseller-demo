@@ -2,7 +2,13 @@ import { Check } from "lucide-react";
 import type { StorefrontPlan } from "@/lib/pricing/types";
 import { cn } from "@/lib/utils";
 
-export function PackageCard({ plan }: { plan: StorefrontPlan }) {
+export function PackageCard({
+  plan,
+  partnerView = false,
+}: {
+  plan: StorefrontPlan;
+  partnerView?: boolean;
+}) {
   const hasDiscount = plan.price < plan.priceOriginal;
 
   return (
@@ -48,14 +54,17 @@ export function PackageCard({ plan }: { plan: StorefrontPlan }) {
           <span className="mb-1 text-sm text-muted-foreground">{plan.period}</span>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          {plan.unitPriceLabel} · {plan.marginLabel}
+          {plan.unitPriceLabel}
+          {partnerView ? (
+            <span className="text-[#e60000]"> · {plan.marginLabel}</span>
+          ) : null}
         </p>
       </div>
 
       <div className="mt-3 rounded-2xl bg-[#fff1f1] px-3 py-2">
         <p className="text-sm font-semibold text-[#e60000]">{plan.creditsLabel}</p>
         <p className="text-[11px] text-muted-foreground">
-          Anchor: 1 USD = 500,000 Credits
+          Priced in Rand — no FX surprise on your bill
         </p>
       </div>
 

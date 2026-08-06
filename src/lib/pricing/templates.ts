@@ -102,6 +102,41 @@ const SHARED_FEATURES_FULL = [
   "Priority support",
 ];
 
+const BUSINESS_FEATURES_BASE = [
+  "Multi-seat admin",
+  "Enterprise RPM / TPM guarantees",
+  "Shared team workspace",
+  "Usage controls",
+  "Invoice billing",
+];
+
+function businessFeatures(kind: "standard" | "pro" | "max") {
+  if (kind === "standard") {
+    return [
+      ...BUSINESS_FEATURES_BASE,
+      "Tier 1 + 2 models",
+    ];
+  }
+  if (kind === "pro") {
+    return [
+      "Enterprise RPM / TPM guarantees",
+      "Full tier access",
+      "High-frequency workflows",
+      "Agent creation",
+      "Deep research",
+      "Priority support",
+    ];
+  }
+  return [
+    "Enterprise RPM / TPM guarantees",
+    "Heavy AI core teams",
+    "Highest credit quota",
+    "Enterprise controls",
+    "Dedicated success manager",
+    "Custom SLA (demo)",
+  ];
+}
+
 function personalFeatures(tiers: Array<1 | 2 | 3>) {
   return tiers.length === 3 ? SHARED_FEATURES_FULL : SHARED_FEATURES_T1;
 }
@@ -207,13 +242,7 @@ export function buildPackagesA(): PackageRow[] {
       tiers: [1, 2],
       designMargin: 0.34,
       cta: "Get a Quote",
-      features: [
-        "Multi-seat admin",
-        "Tier 1 + 2 models",
-        "Shared team workspace",
-        "Usage controls",
-        "Invoice billing",
-      ],
+      features: businessFeatures("standard"),
       models: modelsForTiers([1, 2]),
     },
     {
@@ -228,13 +257,7 @@ export function buildPackagesA(): PackageRow[] {
       designMargin: 0.36,
       popular: true,
       cta: "Get a Quote",
-      features: [
-        "Full tier access",
-        "High-frequency workflows",
-        "Agent creation",
-        "Deep research",
-        "Priority support",
-      ],
+      features: businessFeatures("pro"),
       models: modelsForTiers([1, 2, 3]),
     },
     {
@@ -248,13 +271,7 @@ export function buildPackagesA(): PackageRow[] {
       tiers: [1, 2, 3],
       designMargin: 0.38,
       cta: "Get a Quote",
-      features: [
-        "Heavy AI core teams",
-        "Highest credit quota",
-        "Enterprise controls",
-        "Dedicated success manager",
-        "Custom SLA (demo)",
-      ],
+      features: businessFeatures("max"),
       models: modelsForTiers([1, 2, 3]),
     },
   ];
@@ -330,13 +347,7 @@ export function buildPackagesB(): PackageRow[] {
       tiers: [1, 2],
       designMargin: 0.25,
       cta: "Get a Quote",
-      features: [
-        "Multi-seat admin",
-        "Tier 1 + 2 models",
-        "Shared team workspace",
-        "Usage controls",
-        "Invoice billing",
-      ],
+      features: businessFeatures("standard"),
       models: modelsForTiers([1, 2]),
     },
     {
@@ -351,13 +362,7 @@ export function buildPackagesB(): PackageRow[] {
       designMargin: 0.3,
       popular: true,
       cta: "Get a Quote",
-      features: [
-        "Full tier access",
-        "High-frequency workflows",
-        "Agent creation",
-        "Deep research",
-        "Priority support",
-      ],
+      features: businessFeatures("pro"),
       models: modelsForTiers([1, 2, 3]),
     },
     {
@@ -371,13 +376,7 @@ export function buildPackagesB(): PackageRow[] {
       tiers: [1, 2, 3],
       designMargin: 0.33,
       cta: "Get a Quote",
-      features: [
-        "Heavy AI core teams",
-        "Highest credit quota",
-        "Enterprise controls",
-        "Dedicated success manager",
-        "Custom SLA (demo)",
-      ],
+      features: businessFeatures("max"),
       models: modelsForTiers([1, 2, 3]),
     },
   ];

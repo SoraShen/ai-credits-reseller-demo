@@ -50,7 +50,7 @@ export const COPY = {
     colCredits: "Credits",
     colDesignGm: "Design GM",
     colPromoGm: "Promo GM",
-    colUnit: "R / 10k",
+    colUnit: "R / 1M",
     colDiscount: "Discount",
     colBonus: "Bonus",
     colGift: "Gift %",
@@ -58,6 +58,9 @@ export const COPY = {
     colBonusNote: "Note",
     bonusNote:
       "Revenue unchanged; cost rises with gifted Credits",
+    gmExplain:
+      "Gross Margin (GM) = planned profit share after estimated MaaS cost. For Vodacom partner planning only — hide on the consumer storefront.",
+    fxPower: "6 · FX & purchasing power",
     simFormula:
       "Credits = (input$/MTok×tokens + output$/MTok×tokens) / 1e6 × tierCoeff × creditsPerUsd",
     simModel: "Model",
@@ -122,13 +125,16 @@ export const COPY = {
     colCredits: "Credits",
     colDesignGm: "设计毛利",
     colPromoGm: "折后毛利",
-    colUnit: "兰特/万Credits",
+    colUnit: "兰特/百万Credits",
     colDiscount: "折扣率",
     colBonus: "Bonus 类型",
     colGift: "赠送比例",
     colCostUp: "成本增加",
     colBonusNote: "说明",
     bonusNote: "收入不变，成本随赠送 Credits 上升",
+    gmExplain:
+      "毛利率（Gross Margin）= 扣除预估 MaaS 成本后的计划利润占比。仅供 Vodacom 合作方内部规划，不对终端用户展示。",
+    fxPower: "6 · 汇率与购买力",
     simFormula:
       "Credits = (输入价×输入Token + 输出价×输出Token) / 1e6 × 梯级系数 × 每美元Credits",
     simModel: "模型",
@@ -161,8 +167,8 @@ export const PHILOSOPHY = {
       d: "个人 R69–R899，企业席位 R199–R1,399；年付锁定长期用户。",
     },
     {
-      t: "汇率防火墙",
-      d: "Credits 锚定美元，销售以兰特计价；成本波动只调锚点，不改标价。",
+      t: "汇率防火墙（对终端）",
+      d: "前台只展示兰特标价与 Credits 额度；美元成本与汇率由运营商在批发侧消化，用户账单不随汇率跳动。",
     },
     {
       t: "折扣与 Bonus 双轮驱动",
@@ -187,8 +193,8 @@ export const PHILOSOPHY = {
       d: "Individual R69–R899; Team seats R199–R1,399; annual locks retention.",
     },
     {
-      t: "Currency firewall",
-      d: "Credits pegged to USD, sold in ZAR. Adjust anchor, keep shelf prices.",
+      t: "Currency firewall (for end users)",
+      d: "Storefront shows Rand prices and Credits only. USD wholesale cost & FX are absorbed by the operator — bills stay FX-stable.",
     },
     {
       t: "Discount + Bonus",

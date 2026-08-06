@@ -4,10 +4,10 @@ import {
   formatCredits,
   formatZar,
   tiersLabel,
-  unitPricePer10k,
+  unitPricePer1M,
 } from "./formulas";
 
-export const STORAGE_KEY = "vodacom-ai-pricing-state-v2";
+export const STORAGE_KEY = "vodacom-ai-pricing-state-v3";
 
 function withFreshModels(state: PricingState): PricingState {
   const needsModelRefresh =
@@ -64,7 +64,7 @@ export function toStorefrontPlans(
     .map((p) => {
       const monthlyPromo = Math.round(p.monthlyPrice * d);
       const yearlyPromo = Math.round(p.yearlyPrice * d);
-      const unit = unitPricePer10k(p);
+      const unit = unitPricePer1M(p);
       return {
         id: p.id,
         name: p.name,
@@ -90,8 +90,8 @@ export function toStorefrontPlans(
         bonusLabel: undefined,
         cta: p.cta,
         popular: p.popular,
-        marginLabel: `${Math.round(p.designMargin * 100)}% GM`,
-        unitPriceLabel: `${formatZar(unit)} / 10k Credits`,
+        marginLabel: `${Math.round(p.designMargin * 100)}% Gross Margin`,
+        unitPriceLabel: `${formatZar(unit)} / 1M Credits`,
         tiersLabel: tiersLabel(p.tiers),
         features: p.features,
         models: p.models,

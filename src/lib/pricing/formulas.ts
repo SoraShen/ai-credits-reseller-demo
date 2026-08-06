@@ -18,6 +18,12 @@ export function unitPricePer10k(pkg: PackageRow) {
   return (pkg.monthlyPrice / pkg.credits) * 10000;
 }
 
+/** Shelf unit price: Rand per 1M Credits (consumer-friendly scale). */
+export function unitPricePer1M(pkg: PackageRow) {
+  if (pkg.credits <= 0) return 0;
+  return (pkg.monthlyPrice / pkg.credits) * 1_000_000;
+}
+
 export function marginAtDiscount(pkg: PackageRow, discount: number) {
   const revenue = pkg.monthlyPrice * discount;
   const cost = packageCostZar(pkg);

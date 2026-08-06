@@ -11,12 +11,13 @@ import {
   formatZar,
   marginAtDiscount,
   safetyOk,
-  unitPricePer10k,
+  unitPricePer1M,
 } from "@/lib/pricing/formulas";
 import { COPY, PHILOSOPHY, type Lang } from "@/lib/pricing/i18n";
 import { applyTemplate } from "@/lib/pricing/storage";
 import type { PackageRow, PricingState } from "@/lib/pricing/types";
 import { cn } from "@/lib/utils";
+import { FxPurchasingPower } from "./FxPurchasingPower";
 
 const DISCOUNTS = [1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7];
 
@@ -327,6 +328,7 @@ export function PricingStudio() {
 
         <section className="rounded-2xl border border-border bg-white p-5 shadow-card">
           <h2 className="text-lg font-extrabold">{t.packages}</h2>
+          <p className="mt-1 text-xs text-muted-foreground">{t.gmExplain}</p>
           <PackageTable
             title={t.personal}
             rows={personal}
@@ -473,6 +475,18 @@ export function PricingStudio() {
             <p className="mt-1 text-xs text-muted-foreground">{t.simExample}</p>
           </div>
         </section>
+
+        <FxPurchasingPower
+          params={state.params}
+          pkg={
+            personal.find((p) => p.popular) ??
+            personal[1] ??
+            personal[0] ??
+            state.packages[0]
+          }
+          model={sim.model}
+          lang={lang}
+        />
       </main>
     </div>
   );
@@ -578,7 +592,7 @@ function PackageTable({
                     </div>
                   </td>
                   <td className="py-2 tabular-nums">
-                    {formatZar(unitPricePer10k(p))}
+                    {formatZar(unitPricePer1M(p))}
                   </td>
                 </tr>
               );
