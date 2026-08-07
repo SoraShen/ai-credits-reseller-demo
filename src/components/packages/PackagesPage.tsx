@@ -67,8 +67,8 @@ export function PackagesPage({
       ) : null}
 
       <header className="sticky top-0 z-50 border-b border-border/80 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="flex items-center">
+        <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
+          <Link href="/" className="flex items-center justify-self-start">
             <Image
               src="/images/vodacom-logo.svg"
               alt="Vodacom AI"
@@ -79,7 +79,7 @@ export function PackagesPage({
             />
           </Link>
 
-          <nav className="hidden items-center gap-6 md:flex">
+          <nav className="hidden items-center gap-6 justify-self-center md:flex">
             <a href="#plans" className="text-sm font-medium text-[#e60000]">
               Packages
             </a>
@@ -91,42 +91,44 @@ export function PackagesPage({
             </Link>
           </nav>
 
-          <div className="hidden items-center gap-3 md:flex">
-            {unlocked ? (
+          <div className="flex items-center justify-self-end gap-3">
+            <div className="hidden items-center gap-3 md:flex">
+              {unlocked ? (
+                <button
+                  type="button"
+                  onClick={() => setPartnerView(!partnerView)}
+                  className={cn(
+                    "rounded-full px-3 py-1.5 text-[11px] font-bold",
+                    partnerView
+                      ? "bg-[#1a1a1a] text-white"
+                      : "border border-border text-muted-foreground"
+                  )}
+                >
+                  {partnerView ? "Partner view" : "Customer view"}
+                </button>
+              ) : null}
+              {partnerView ? (
+                <span className="rounded-full border border-border px-3 py-1.5 text-[11px] font-semibold text-muted-foreground">
+                  {templateLabel}
+                </span>
+              ) : null}
               <button
                 type="button"
-                onClick={() => setPartnerView(!partnerView)}
-                className={cn(
-                  "rounded-full px-3 py-1.5 text-[11px] font-bold",
-                  partnerView
-                    ? "bg-[#1a1a1a] text-white"
-                    : "border border-border text-muted-foreground"
-                )}
+                className="rounded-full border border-[#e60000] px-4 py-2 text-sm font-bold text-[#e60000]"
               >
-                {partnerView ? "Partner view" : "Customer view"}
+                Login
               </button>
-            ) : null}
-            {partnerView ? (
-              <span className="rounded-full border border-border px-3 py-1.5 text-[11px] font-semibold text-muted-foreground">
-                {templateLabel}
-              </span>
-            ) : null}
+            </div>
+
             <button
               type="button"
-              className="rounded-full border border-[#e60000] px-4 py-2 text-sm font-bold text-[#e60000]"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border md:hidden"
+              onClick={() => setOpenNav((v) => !v)}
+              aria-label="Menu"
             >
-              Login
+              {openNav ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
-
-          <button
-            type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border md:hidden"
-            onClick={() => setOpenNav((v) => !v)}
-            aria-label="Menu"
-          >
-            {openNav ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
         </div>
         {openNav ? (
           <div className="space-y-3 border-t border-border bg-white px-4 py-4 md:hidden">
