@@ -114,7 +114,12 @@ export function PackagesPage({
               ) : null}
               <button
                 type="button"
-                className="rounded-full border border-primary px-4 py-2 text-sm font-bold text-brand-ink"
+                className={cn(
+                  "rounded-full px-4 py-2 text-sm font-bold",
+                  brand.id === "mtn"
+                    ? "border-2 border-black text-black"
+                    : "border border-primary text-brand-ink"
+                )}
               >
                 Login
               </button>
@@ -153,7 +158,14 @@ export function PackagesPage({
 
       <main id="plans" className="mx-auto max-w-6xl px-4 pb-20 pt-10 sm:px-6">
         <div className="text-center">
-          <span className="inline-flex rounded-full bg-brand-muted px-3 py-1 text-xs font-bold text-brand-ink">
+          <span
+            className={cn(
+              "inline-flex rounded-full px-3 py-1 text-xs font-bold",
+              brand.id === "mtn"
+                ? "bg-[#ffcb05] text-black"
+                : "bg-brand-muted text-brand-ink"
+            )}
+          >
             {brand.productName} Credits
           </span>
           <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl">
