@@ -10,9 +10,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:vodacom": "NEXT_PUBLIC_BRAND=vodacom NEXT_PUBLIC_BASE_PATH=/vodacom next build",
     "build:mtn": "NEXT_PUBLIC_BRAND=mtn NEXT_PUBLIC_BASE_PATH=/MTN next build",
     "build:rain": "NEXT_PUBLIC_BRAND=rain NEXT_PUBLIC_BASE_PATH=/rain next build",
     "start": "next start",
+    "start:vodacom": "NEXT_PUBLIC_BRAND=vodacom NEXT_PUBLIC_BASE_PATH=/vodacom next start -p 3000",
     "start:mtn": "NEXT_PUBLIC_BRAND=mtn NEXT_PUBLIC_BASE_PATH=/MTN next start -p 3001",
     "start:rain": "NEXT_PUBLIC_BRAND=rain NEXT_PUBLIC_BASE_PATH=/rain next start -p 3002",
     "lint": "eslint",

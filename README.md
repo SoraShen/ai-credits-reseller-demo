@@ -7,7 +7,7 @@ One codebase, multiple operator skins (Vodacom / MTN / rain) for customer refere
 
 - **Packages storefront** (`/`, `/packages`) — Individual & Team Credits plans, monthly/yearly, limited-time countdown
 - **Pricing Studio** (`/pricing-studio`) — EN/中文, Version A (profit) / Version B (growth) templates, editable Huawei MaaS costs, margin sensitivity, call simulator; syncs to storefront via `localStorage`
-- **Multi-brand skins** — build with `NEXT_PUBLIC_BRAND=vodacom|mtn|rain` and optional `NEXT_PUBLIC_BASE_PATH` (e.g. `/MTN`, `/rain`)
+- **Multi-brand skins** — build with `NEXT_PUBLIC_BRAND=vodacom|mtn|rain` and `NEXT_PUBLIC_BASE_PATH` (e.g. `/vodacom`, `/MTN`, `/rain`)
 - Credits anchor: `1 USD = 500,000 Credits`
 
 ## Quick start
@@ -20,9 +20,9 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
-npm run build && npm run start   # production (default Vodacom skin)
-npm run build:mtn && npm run start:mtn
-npm run build:rain && npm run start:rain
+npm run build:vodacom && npm run start:vodacom   # /vodacom → :3000
+npm run build:mtn && npm run start:mtn           # /MTN → :3001
+npm run build:rain && npm run start:rain         # /rain → :3002
 ```
 
 Requires **Node.js 24+**.
