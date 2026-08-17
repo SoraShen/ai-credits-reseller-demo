@@ -1,15 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { brand } from "@/lib/brand";
 import type { Audience, Billing } from "@/lib/pricing/types";
 import { annualSaving, formatPct } from "@/lib/pricing/formulas";
 import { toStorefrontPlans } from "@/lib/pricing/storage";
 import { usePricingState } from "@/hooks/usePricingState";
 import { usePartnerView } from "@/hooks/usePartnerView";
-import { brand } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 import { CountdownBanner } from "./CountdownBanner";
 import { PackageCard } from "./PackageCard";
@@ -70,13 +69,13 @@ export function PackagesPage({
       <header className="sticky top-0 z-50 border-b border-border/80 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
           <Link href="/" className="flex items-center justify-self-start">
-            <Image
-              src={brand.logo}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={brand.logoHref}
               alt={brand.logoAlt}
               width={160}
               height={36}
-              style={{ width: "auto", height: "auto" }}
-              priority
+              style={{ width: "auto", height: 36 }}
             />
           </Link>
 
@@ -303,12 +302,13 @@ export function PackagesPage({
       <footer className="border-t border-border bg-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>
-            <Image
-              src={brand.logo}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={brand.logoHref}
               alt={brand.logoAlt}
               width={140}
               height={32}
-              style={{ width: "auto", height: "auto" }}
+              style={{ width: "auto", height: 32 }}
             />
             <p
               className="mt-2 max-w-md cursor-default text-xs text-muted-foreground"
