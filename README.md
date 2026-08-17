@@ -1,13 +1,14 @@
-# Vodacom AI Credits Demo
+# AI Credits Reseller Demo
 
-Huawei Cloud–provided **frontend demo** for Vodacom customer reference.  
-Not an official Vodacom product. No payment or backend integration.
+Huawei Cloud–provided **frontend demo** for an **AI Credits reseller** offering.  
+One codebase, multiple operator skins (Vodacom / MTN / rain) for customer reference — not an official product of any operator. No payment or backend integration.
 
 ## What’s included
 
-- **Packages storefront** (`/`, `/packages`) — Individual & Team Credits plans, monthly/yearly, limited-time countdown (Alibaba-style)
+- **Packages storefront** (`/`, `/packages`) — Individual & Team Credits plans, monthly/yearly, limited-time countdown
 - **Pricing Studio** (`/pricing-studio`) — EN/中文, Version A (profit) / Version B (growth) templates, editable Huawei MaaS costs, margin sensitivity, call simulator; syncs to storefront via `localStorage`
-- Branding: Vodacom red `#E60000`, Credits anchor `1 USD = 500,000 Credits`
+- **Multi-brand skins** — build with `NEXT_PUBLIC_BRAND=vodacom|mtn|rain` and optional `NEXT_PUBLIC_BASE_PATH` (e.g. `/MTN`, `/rain`)
+- Credits anchor: `1 USD = 500,000 Credits`
 
 ## Quick start
 
@@ -19,7 +20,9 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
-npm run build && npm run start   # production
+npm run build && npm run start   # production (default Vodacom skin)
+npm run build:mtn && npm run start:mtn
+npm run build:rain && npm run start:rain
 ```
 
 Requires **Node.js 24+**.
@@ -52,6 +55,7 @@ npm run start   # :3000 — put Nginx reverse-proxy + HTTPS in front
 
 | Path | Purpose |
 |------|---------|
+| `src/lib/brand.ts` | Operator skin config (logo, copy, disclaimer) |
 | `src/lib/pricing/` | Templates A/B, Huawei MaaS prices, formulas, storage |
 | `src/components/packages/` | Storefront UI |
 | `src/components/pricing-studio/` | Pricing calculator UI |
@@ -59,4 +63,4 @@ npm run start   # :3000 — put Nginx reverse-proxy + HTTPS in front
 
 ## Disclaimer
 
-This environment is provided by **Huawei Cloud** for demonstration. Designs and pricing are for **Vodacom customer reference only**.
+This environment is provided by **Huawei Cloud** for demonstration. Operator skins and pricing are for **customer reference only**.

@@ -4,8 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: runner
-    image: vodacom-ai-credits-demo:latest
-    container_name: vodacom-ai-credits-demo
+    image: ai-credits-reseller-demo:latest
+    container_name: ai-credits-reseller-demo
     restart: unless-stopped
     ports:
       - "${PORT:-3000}:3000"
@@ -28,8 +28,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    image: vodacom-ai-credits-demo:dev
-    container_name: vodacom-ai-credits-demo-dev
+    image: ai-credits-reseller-demo:dev
+    container_name: ai-credits-reseller-demo-dev
     restart: unless-stopped
     ports:
       - "${DEV_PORT:-3001}:3000"

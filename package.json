@@ -1,8 +1,8 @@
 {
-  "name": "vodacom-ai-credits-demo",
+  "name": "ai-credits-reseller-demo",
   "version": "1.0.0",
   "private": true,
-  "description": "Huawei Cloud frontend demo: Vodacom AI Credits storefront + Pricing Studio",
+  "description": "Huawei Cloud frontend demo: multi-operator AI Credits reseller storefront + Pricing Studio",
   "license": "MIT",
   "engines": {
     "node": ">=24"
