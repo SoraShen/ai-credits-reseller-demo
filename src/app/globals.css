@@ -149,6 +149,52 @@
   --sidebar-ring: #ffcb05;
 }
 
+/* rain SA: blue #0077C8 wordmark + clean unlimited-plan cards */
+[data-brand="rain"] {
+  --brand: #0077c8;
+  --brand-foreground: #ffffff;
+  --brand-soft: #e8f4fc;
+  --brand-muted: #cfe8f8;
+  --brand-ink: #0077c8;
+  --brand-wash: rgba(0, 119, 200, 0.12);
+  --success: #0b7a3e;
+  --success-soft: #e8f8ef;
+  --info: #005fa0;
+  --info-soft: #eaf4fb;
+  --background: #f5f7fa;
+  --foreground: #202020;
+  --card: #ffffff;
+  --card-foreground: #202020;
+  --popover: #ffffff;
+  --popover-foreground: #202020;
+  --primary: #0077c8;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f4fc;
+  --secondary-foreground: #202020;
+  --muted: #e7ecf2;
+  --muted-foreground: #5a6a7a;
+  --accent: #cfe8f8;
+  --accent-foreground: #005fa0;
+  --destructive: #b00000;
+  --border: #dce3ea;
+  --input: #dce3ea;
+  --ring: #0077c8;
+  --chart-1: #0077c8;
+  --chart-2: #0096ff;
+  --chart-3: #6b2d5c;
+  --chart-4: #5a6a7a;
+  --chart-5: #bbbcbc;
+  --radius: 1.5rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #202020;
+  --sidebar-primary: #0077c8;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8f4fc;
+  --sidebar-accent-foreground: #0077c8;
+  --sidebar-border: #dce3ea;
+  --sidebar-ring: #0077c8;
+}
+
 @layer base {
   * {
     @apply border-border;

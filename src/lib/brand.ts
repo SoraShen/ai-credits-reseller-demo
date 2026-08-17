@@ -1,8 +1,8 @@
 /**
  * Front-end brand skin only — pricing math is brand-agnostic.
- * Selected at build/runtime via NEXT_PUBLIC_BRAND=vodacom|mtn
+ * Selected at build/runtime via NEXT_PUBLIC_BRAND=vodacom|mtn|rain
  */
-export type BrandId = "vodacom" | "mtn";
+export type BrandId = "vodacom" | "mtn" | "rain";
 
 export interface Brand {
   id: BrandId;
@@ -65,9 +65,28 @@ const MTN: Brand = {
   dataBrand: "mtn",
 };
 
+const RAIN: Brand = {
+  id: "rain",
+  name: "rain",
+  shortName: "rain",
+  productName: "rain AI",
+  logo: "/images/rain-logo.svg",
+  logoHref: withBase("/images/rain-logo.svg"),
+  logoAlt: "rain AI",
+  favicon: withBase("/images/rain-logo.svg"),
+  disclaimer:
+    "Huawei Cloud demo environment — designs above are for rain customer reference only (not an official rain product).",
+  promoPrefix: "Limited-time Early Bird",
+  partnerLabel: "Partner view",
+  customerLabel: "Customer view",
+  dataBrand: "rain",
+};
+
 export function resolveBrand(raw?: string | null): Brand {
   const id = (raw || process.env.NEXT_PUBLIC_BRAND || "vodacom").toLowerCase();
-  return id === "mtn" ? MTN : VODACOM;
+  if (id === "mtn") return MTN;
+  if (id === "rain") return RAIN;
+  return VODACOM;
 }
 
 export const brand = resolveBrand();

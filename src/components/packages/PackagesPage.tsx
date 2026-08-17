@@ -73,12 +73,19 @@ export function PackagesPage({
             <img
               src={brand.logoHref}
               alt={brand.logoAlt}
-              width={brand.id === "mtn" ? 64 : 160}
-              height={brand.id === "mtn" ? 32 : 36}
-              className={brand.id === "mtn" ? "h-8 w-auto" : "h-9 w-auto"}
+              width={brand.id === "mtn" ? 64 : brand.id === "rain" ? 104 : 160}
+              height={brand.id === "mtn" ? 32 : brand.id === "rain" ? 32 : 36}
+              className={
+                brand.id === "mtn" || brand.id === "rain" ? "h-8 w-auto" : "h-9 w-auto"
+              }
             />
             {brand.id === "mtn" ? (
               <span className="text-[1.35rem] font-extrabold leading-none tracking-tight text-black">
+                AI
+              </span>
+            ) : null}
+            {brand.id === "rain" ? (
+              <span className="text-[1.15rem] font-semibold leading-none tracking-tight text-[#202020]">
                 AI
               </span>
             ) : null}
@@ -123,7 +130,9 @@ export function PackagesPage({
                   "rounded-full px-4 py-2 text-sm font-bold",
                   brand.id === "mtn"
                     ? "border-2 border-black text-black"
-                    : "border border-primary text-brand-ink"
+                    : brand.id === "rain"
+                      ? "border border-[#0077C8] text-[#0077C8]"
+                      : "border border-primary text-brand-ink"
                 )}
               >
                 Login
@@ -168,13 +177,20 @@ export function PackagesPage({
               "inline-flex rounded-full px-3 py-1 text-xs font-bold",
               brand.id === "mtn"
                 ? "bg-[#ffcb05] text-black"
-                : "bg-brand-muted text-brand-ink"
+                : brand.id === "rain"
+                  ? "bg-[#e8f4fc] text-[#0077C8]"
+                  : "bg-brand-muted text-brand-ink"
             )}
           >
             {brand.productName} Credits
           </span>
-          <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl">
-            Choose Your Package
+          <h1
+            className={cn(
+              "mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl",
+              brand.id === "rain" && "font-semibold lowercase tracking-tight"
+            )}
+          >
+            {brand.id === "rain" ? "choose your package" : "Choose Your Package"}
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
             Simple Rand pricing for AI Credits. Configure wholesale logic in{" "}
@@ -324,12 +340,23 @@ export function PackagesPage({
               <img
                 src={brand.logoHref}
                 alt={brand.logoAlt}
-                width={brand.id === "mtn" ? 56 : 140}
-                height={brand.id === "mtn" ? 28 : 32}
-                className={brand.id === "mtn" ? "h-7 w-auto" : "h-8 w-auto"}
+                width={
+                  brand.id === "mtn" ? 56 : brand.id === "rain" ? 90 : 140
+                }
+                height={brand.id === "mtn" || brand.id === "rain" ? 28 : 32}
+                className={
+                  brand.id === "mtn" || brand.id === "rain"
+                    ? "h-7 w-auto"
+                    : "h-8 w-auto"
+                }
               />
               {brand.id === "mtn" ? (
                 <span className="text-xl font-extrabold leading-none tracking-tight text-black">
+                  AI
+                </span>
+              ) : null}
+              {brand.id === "rain" ? (
+                <span className="text-lg font-semibold leading-none tracking-tight text-[#202020]">
                   AI
                 </span>
               ) : null}

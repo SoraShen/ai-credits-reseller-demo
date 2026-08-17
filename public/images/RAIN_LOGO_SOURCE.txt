@@ -1,0 +1,5 @@
+Official rain logo downloaded from rain.co.za CDN (exact file):
+
+https://cdn.rain.co.za/web/assets-v4/images/header/rain_logo.svg
+
+Plan page reference: https://www.rain.co.za/mobile
