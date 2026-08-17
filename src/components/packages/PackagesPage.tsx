@@ -92,14 +92,23 @@ export function PackagesPage({
           </Link>
 
           <nav className="hidden items-center gap-6 justify-self-center md:flex">
-            <a href="#plans" className="text-sm font-medium text-brand-ink">
-              Packages
+            <a
+              href="#plans"
+              className={cn(
+                "text-sm font-medium text-brand-ink",
+                brand.id === "rain" && "lowercase text-[#202020]"
+              )}
+            >
+              {brand.id === "rain" ? "packages" : "Packages"}
             </a>
             <Link
               href="/pricing-studio"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground"
+              className={cn(
+                "text-sm font-medium text-muted-foreground hover:text-foreground",
+                brand.id === "rain" && "lowercase"
+              )}
             >
-              Pricing Studio
+              {brand.id === "rain" ? "pricing studio" : "Pricing Studio"}
             </Link>
           </nav>
 
@@ -131,11 +140,11 @@ export function PackagesPage({
                   brand.id === "mtn"
                     ? "border-2 border-black text-black"
                     : brand.id === "rain"
-                      ? "border border-[#0077C8] text-[#0077C8]"
+                      ? "border border-[#0077C8] text-[#0077C8] lowercase"
                       : "border border-primary text-brand-ink"
                 )}
               >
-                Login
+                {brand.id === "rain" ? "sign in" : "Login"}
               </button>
             </div>
 
@@ -172,32 +181,68 @@ export function PackagesPage({
 
       <main id="plans" className="mx-auto max-w-6xl px-4 pb-20 pt-10 sm:px-6">
         <div className="text-center">
-          <span
-            className={cn(
-              "inline-flex rounded-full px-3 py-1 text-xs font-bold",
-              brand.id === "mtn"
-                ? "bg-[#ffcb05] text-black"
-                : brand.id === "rain"
-                  ? "bg-[#e8f4fc] text-[#0077C8]"
+          {brand.id === "rain" ? (
+            <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[#7eb8e0]">
+              south africa&apos;s unlimited network
+            </p>
+          ) : (
+            <span
+              className={cn(
+                "inline-flex rounded-full px-3 py-1 text-xs font-bold",
+                brand.id === "mtn"
+                  ? "bg-[#ffcb05] text-black"
                   : "bg-brand-muted text-brand-ink"
-            )}
-          >
-            {brand.productName} Credits
-          </span>
+              )}
+            >
+              {brand.productName} Credits
+            </span>
+          )}
           <h1
             className={cn(
               "mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl",
-              brand.id === "rain" && "font-semibold lowercase tracking-tight"
+              brand.id === "rain" &&
+                "font-semibold lowercase tracking-tight text-[#202020]"
             )}
           >
-            {brand.id === "rain" ? "choose your package" : "Choose Your Package"}
+            {brand.id === "rain" ? (
+              <>
+                choose your{" "}
+                <span className="font-bold text-[#0077C8]">unlimited AI.</span>
+              </>
+            ) : (
+              "Choose Your Package"
+            )}
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
-            Simple Rand pricing for AI Credits. Configure wholesale logic in{" "}
-            <Link href="/pricing-studio" className="font-semibold text-brand-ink">
-              Pricing Studio
-            </Link>
-            .
+          <p
+            className={cn(
+              "mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base",
+              brand.id === "rain" && "lowercase text-[#5a6a7a]"
+            )}
+          >
+            {brand.id === "rain" ? (
+              <>
+                every plan includes AI Credits priced in Rand on rain&apos;s
+                network. configure wholesale logic in{" "}
+                <Link
+                  href="/pricing-studio"
+                  className="font-semibold text-[#0077C8]"
+                >
+                  pricing studio
+                </Link>
+                .
+              </>
+            ) : (
+              <>
+                Simple Rand pricing for AI Credits. Configure wholesale logic in{" "}
+                <Link
+                  href="/pricing-studio"
+                  className="font-semibold text-brand-ink"
+                >
+                  Pricing Studio
+                </Link>
+                .
+              </>
+            )}
           </p>
           <p
             className="mx-auto mt-3 max-w-2xl cursor-default text-[11px] leading-relaxed text-muted-foreground/90"
@@ -211,8 +256,14 @@ export function PackagesPage({
         <div className="mx-auto mt-8 flex w-full max-w-md rounded-full bg-white p-1 shadow-card">
           {(
             [
-              ["personal", "Individual"],
-              ["business", "Team / Business"],
+              [
+                "personal",
+                brand.id === "rain" ? "individual" : "Individual",
+              ],
+              [
+                "business",
+                brand.id === "rain" ? "team / business" : "Team / Business",
+              ],
             ] as const
           ).map(([key, label]) => (
             <button
@@ -221,6 +272,7 @@ export function PackagesPage({
               onClick={() => setAudience(key)}
               className={cn(
                 "flex-1 rounded-full px-4 py-2.5 text-sm font-bold transition-colors",
+                brand.id === "rain" && "lowercase font-semibold",
                 audience === key
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground"

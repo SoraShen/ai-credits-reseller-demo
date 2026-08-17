@@ -20,15 +20,66 @@ export function PackageCard({
   return <DefaultPackageCard plan={plan} partnerView={partnerView} />;
 }
 
-/** Accent colours mirrored from rain.co.za/mobile package screens. */
-const RAIN_ACCENTS: Record<string, { bg: string; soft: string; label: string }> = {
-  lite: { bg: "#0077C8", soft: "#E8F4FC", label: "city" },
-  standard: { bg: "#6B2D5C", soft: "#F6EAF2", label: "province" },
-  pro: { bg: "#5A6A7A", soft: "#EEF1F4", label: "countrywide" },
-  ultra: { bg: "#0096FF", soft: "#EAF5FF", label: "max" },
-  "seat-standard": { bg: "#0077C8", soft: "#E8F4FC", label: "team" },
-  "seat-pro": { bg: "#6B2D5C", soft: "#F6EAF2", label: "team+" },
-  "seat-max": { bg: "#0096FF", soft: "#EAF5FF", label: "enterprise" },
+/** UI accents only — blue / dark blue / light grey (not product burgundy). */
+const RAIN_ACCENTS: Record<
+  string,
+  {
+    banner: string;
+    bannerText: string;
+    soft: string;
+    label: string;
+    title: string;
+  }
+> = {
+  lite: {
+    banner: "#E8EDF2",
+    bannerText: "#202020",
+    soft: "#F5F7FA",
+    label: "starter",
+    title: "unlimited lite",
+  },
+  standard: {
+    banner: "#0077C8",
+    bannerText: "#FFFFFF",
+    soft: "#E8F4FC",
+    label: "most popular",
+    title: "unlimited standard",
+  },
+  pro: {
+    banner: "#005FA0",
+    bannerText: "#FFFFFF",
+    soft: "#EAF4FB",
+    label: "pro",
+    title: "unlimited pro",
+  },
+  ultra: {
+    banner: "#003A62",
+    bannerText: "#FFFFFF",
+    soft: "#E6EEF6",
+    label: "max",
+    title: "unlimited ultra",
+  },
+  "seat-standard": {
+    banner: "#E8EDF2",
+    bannerText: "#202020",
+    soft: "#F5F7FA",
+    label: "team",
+    title: "unlimited team",
+  },
+  "seat-pro": {
+    banner: "#0077C8",
+    bannerText: "#FFFFFF",
+    soft: "#E8F4FC",
+    label: "team+",
+    title: "unlimited team pro",
+  },
+  "seat-max": {
+    banner: "#003A62",
+    bannerText: "#FFFFFF",
+    soft: "#E6EEF6",
+    label: "enterprise",
+    title: "unlimited team max",
+  },
 };
 
 function RainPackageCard({
@@ -40,94 +91,72 @@ function RainPackageCard({
 }) {
   const hasDiscount = plan.price < plan.priceOriginal;
   const accent = RAIN_ACCENTS[plan.id] ?? {
-    bg: "#0077C8",
+    banner: "#0077C8",
+    bannerText: "#FFFFFF",
     soft: "#E8F4FC",
     label: "plan",
+    title: plan.name.toLowerCase(),
   };
 
   return (
     <article
       className={cn(
-        "relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border bg-white shadow-card",
-        plan.popular ? "border-[#0077C8] ring-2 ring-[#0077C8]/25" : "border-[#dce3ea]"
+        "relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-[#e4e8ee] bg-white",
+        plan.popular && "shadow-[0_12px_40px_rgba(0,119,200,0.12)]"
       )}
     >
+      {/* Plan name banner — light grey / blue / dark blue */}
       <div
-        className="h-2 w-full"
-        style={{ background: accent.bg }}
-        aria-hidden
-      />
+        className="px-5 py-4"
+        style={{ background: accent.banner, color: accent.bannerText }}
+      >
+        <p className="text-[11px] font-medium lowercase tracking-wide opacity-80">
+          {accent.label}
+          {plan.discountLabel ? ` · ${plan.discountLabel.toLowerCase()}` : ""}
+        </p>
+        <h3 className="mt-1 text-xl font-semibold lowercase tracking-tight">
+          {accent.title}
+        </h3>
+        <p className="mt-0.5 text-sm opacity-75">{plan.tiersLabel}</p>
+      </div>
 
       <div className="flex flex-1 flex-col px-5 pb-5 pt-5">
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <p
-              className="text-[11px] font-bold uppercase tracking-[0.16em]"
-              style={{ color: accent.bg }}
-            >
-              {accent.label}
-            </p>
-            <h3 className="mt-1 text-2xl font-semibold tracking-tight text-[#202020] lowercase">
-              {plan.name}
-            </h3>
-            <p className="mt-0.5 text-sm text-[#5a6a7a]">{plan.tiersLabel}</p>
-          </div>
-          {plan.popular ? (
-            <span
-              className="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white"
-              style={{ background: accent.bg }}
-            >
-              recommended
-            </span>
-          ) : plan.discountLabel ? (
-            <span
-              className="rounded-full px-2.5 py-1 text-[10px] font-bold"
-              style={{ background: accent.soft, color: accent.bg }}
-            >
-              {plan.discountLabel}
-            </span>
-          ) : null}
-        </div>
-
-        <div
-          className="mt-5 rounded-2xl px-4 py-4"
-          style={{ background: accent.soft }}
-        >
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#5a6a7a]">
-            from
+        <p className="text-xs text-[#8a97a5]">from</p>
+        {hasDiscount ? (
+          <p className="text-sm text-[#8a97a5] line-through">
+            {plan.currency}
+            {plan.priceOriginal.toLocaleString("en-ZA")}
           </p>
-          {hasDiscount ? (
-            <p className="text-sm text-[#5a6a7a] line-through">
-              {plan.currency}
-              {plan.priceOriginal.toLocaleString("en-ZA")}
-            </p>
-          ) : null}
-          <div className="flex items-end gap-1.5">
-            <span className="text-4xl font-semibold tracking-tight text-[#202020]">
-              {plan.currency}
-              {plan.price.toLocaleString("en-ZA")}
-            </span>
-            <span className="mb-1.5 text-sm text-[#5a6a7a]">{plan.period}</span>
-          </div>
-          {plan.monthlyEquivalentLabel ? (
-            <p className="mt-1 text-xs text-[#5a6a7a]">
-              {plan.monthlyEquivalentLabel}
-            </p>
-          ) : null}
-          {plan.savingsLabel ? (
-            <p className="mt-2 text-xs font-bold text-[#0b7a3e]">
-              {plan.savingsLabel}
-            </p>
-          ) : null}
+        ) : null}
+        <div className="flex items-end gap-1.5">
+          <span className="text-4xl font-semibold tracking-tight text-[#0077C8]">
+            {plan.currency}
+            {plan.price.toLocaleString("en-ZA")}
+          </span>
         </div>
-
-        <p className="mt-4 text-sm font-semibold text-[#202020]">
-          {formatCredits(plan.credits)} Credits
-          <span className="font-normal text-[#5a6a7a]"> / month</span>
+        <p className="mt-0.5 text-xs text-[#8a97a5]">
+          {plan.period.includes("year") ? "billed yearly" : "month-to-month"}
         </p>
-        <p className="mt-0.5 text-xs text-[#5a6a7a]">{plan.unitPriceLabel}</p>
+        {plan.monthlyEquivalentLabel ? (
+          <p className="mt-1 text-xs text-[#8a97a5]">
+            {plan.monthlyEquivalentLabel}
+          </p>
+        ) : null}
+        {plan.savingsLabel ? (
+          <p className="mt-2 text-xs font-semibold text-[#0077C8]">
+            {plan.savingsLabel.toLowerCase()}
+          </p>
+        ) : null}
+
+        <p className="mt-5 text-sm text-[#202020]">
+          <span className="font-semibold">
+            {formatCredits(plan.credits)} Credits
+          </span>
+          <span className="text-[#8a97a5]"> / month</span>
+        </p>
+        <p className="mt-0.5 text-xs text-[#8a97a5]">{plan.unitPriceLabel}</p>
         {plan.creditsSubLabel ? (
-          <p className="mt-0.5 text-xs text-[#5a6a7a]">{plan.creditsSubLabel}</p>
+          <p className="mt-0.5 text-xs text-[#8a97a5]">{plan.creditsSubLabel}</p>
         ) : null}
 
         {partnerView ? (
@@ -141,38 +170,38 @@ function RainPackageCard({
           </p>
         ) : null}
 
-        <ul className="mt-4 space-y-2.5">
-          <li className="flex items-start gap-2.5 text-sm text-[#202020]/90">
-            <span
-              className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
-              style={{ background: accent.bg }}
+        <ul className="mt-5 space-y-3">
+          <li className="flex items-start gap-2.5 text-sm text-[#202020]">
+            <Check
+              className="mt-0.5 h-4 w-4 shrink-0 text-[#0077C8]"
+              strokeWidth={2.5}
             />
-            <span>Priced in Rand — no FX surprise on your bill</span>
+            <span>priced in Rand — no FX surprise on your bill</span>
           </li>
           {plan.features.slice(0, 5).map((f) => (
-            <li key={f} className="flex items-start gap-2.5 text-sm text-[#202020]/90">
-              <span
-                className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
-                style={{ background: accent.bg }}
+            <li key={f} className="flex items-start gap-2.5 text-sm text-[#202020]">
+              <Check
+                className="mt-0.5 h-4 w-4 shrink-0 text-[#0077C8]"
+                strokeWidth={2.5}
               />
-              <span>{f}</span>
+              <span className="lowercase">{f}</span>
             </li>
           ))}
         </ul>
 
         <button
           type="button"
-          className="mt-auto w-full rounded-full px-4 py-3.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
-          style={{ background: accent.bg, marginTop: "1.5rem" }}
+          className="mt-auto w-full rounded-full bg-[#0077C8] px-4 py-3.5 text-sm font-semibold lowercase text-white transition-colors hover:bg-[#005FA0]"
+          style={{ marginTop: "1.75rem" }}
         >
-          {plan.cta}
+          {plan.cta.toLowerCase() === "get started" ? "buy now" : plan.cta.toLowerCase()}
         </button>
 
-        <div className="mt-4 border-t border-[#e7ecf2] pt-3">
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#5a6a7a]">
+        <div className="mt-4 border-t border-[#eef1f5] pt-3">
+          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-[#8a97a5]">
             models
           </p>
-          <ul className="mt-1.5 space-y-1 text-xs text-[#5a6a7a]">
+          <ul className="mt-1.5 space-y-1 text-xs text-[#8a97a5]">
             {plan.models.slice(0, 5).map((m) => (
               <li key={m}>{m}</li>
             ))}
