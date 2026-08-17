@@ -68,15 +68,20 @@ export function PackagesPage({
 
       <header className="sticky top-0 z-50 border-b border-border/80 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
-          <Link href="/" className="flex items-center justify-self-start">
+          <Link href="/" className="flex items-center justify-self-start gap-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={brand.logoHref}
               alt={brand.logoAlt}
-              width={160}
-              height={36}
-              style={{ width: "auto", height: 36 }}
+              width={brand.id === "mtn" ? 64 : 160}
+              height={brand.id === "mtn" ? 32 : 36}
+              className={brand.id === "mtn" ? "h-8 w-auto" : "h-9 w-auto"}
             />
+            {brand.id === "mtn" ? (
+              <span className="text-[1.35rem] font-extrabold leading-none tracking-tight text-black">
+                AI
+              </span>
+            ) : null}
           </Link>
 
           <nav className="hidden items-center gap-6 justify-self-center md:flex">
@@ -314,14 +319,21 @@ export function PackagesPage({
       <footer className="border-t border-border bg-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={brand.logoHref}
-              alt={brand.logoAlt}
-              width={140}
-              height={32}
-              style={{ width: "auto", height: 32 }}
-            />
+            <div className="flex items-center gap-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={brand.logoHref}
+                alt={brand.logoAlt}
+                width={brand.id === "mtn" ? 56 : 140}
+                height={brand.id === "mtn" ? 28 : 32}
+                className={brand.id === "mtn" ? "h-7 w-auto" : "h-8 w-auto"}
+              />
+              {brand.id === "mtn" ? (
+                <span className="text-xl font-extrabold leading-none tracking-tight text-black">
+                  AI
+                </span>
+              ) : null}
+            </div>
             <p
               className="mt-2 max-w-md cursor-default text-xs text-muted-foreground"
               onClick={registerSecretClick}

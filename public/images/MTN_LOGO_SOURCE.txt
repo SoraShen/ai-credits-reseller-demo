@@ -1,0 +1,8 @@
+Official MTN logos downloaded from MTN South Africa shop frontend (onlinecms.mtn.co.za), referenced by https://www.mtn.co.za/shop/deals/
+
+- mtn-logo.svg          <- mtn_logo_sm_dark.svg (black mark for white headers)
+- mtn-logo-sunshine.svg <- mtn_logo_lg-sunshine.svg (yellow mark)
+
+Source URLs:
+https://onlinecms.mtn.co.za/sites/default/files/design-system%2C%20vivid%2C%20images%2C%20icons/brand/mtn_logo_sm_dark.svg
+https://onlinecms.mtn.co.za/sites/default/files/design-system%2C%20vivid%2C%20images%2C%20icons/brand/mtn_logo_lg-sunshine.svg
