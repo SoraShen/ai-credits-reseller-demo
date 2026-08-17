@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import { brand } from "@/lib/brand";
 import "./globals.css";
 
 const montserrat = Montserrat({
-  variable: "--font-vodacom",
+  variable: "--font-brand",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Vodacom AI | Packages",
-  description:
-    "Demo: Choose personal or business AI token packages from Vodacom AI. Multi-model access in one hub.",
+  title: `${brand.productName} | Packages`,
+  description: `Demo: Choose personal or business AI token packages from ${brand.productName}. Multi-model access in one hub.`,
   icons: {
-    icon: "/images/vodacom-logo.svg",
+    icon: brand.favicon,
   },
 };
 
@@ -26,6 +26,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-brand={brand.dataBrand}
       className={`${montserrat.variable} h-full`}
       data-scroll-behavior="smooth"
     >

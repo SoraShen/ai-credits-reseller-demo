@@ -40,7 +40,7 @@ export function CountdownBanner({ params }: { params: PricingParams }) {
   const p = left == null ? null : parts(left);
 
   return (
-    <div className="bg-[#e60000] text-white">
+    <div className="bg-primary text-primary-foreground">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-2 px-4 py-2.5 text-center sm:flex-row sm:gap-4">
         <p className="text-[13px] font-semibold">
           ⚡ {params.promoLabelEn}

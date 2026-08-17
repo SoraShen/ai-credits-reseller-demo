@@ -9,6 +9,7 @@ import { annualSaving, formatPct } from "@/lib/pricing/formulas";
 import { toStorefrontPlans } from "@/lib/pricing/storage";
 import { usePricingState } from "@/hooks/usePricingState";
 import { usePartnerView } from "@/hooks/usePartnerView";
+import { brand } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 import { CountdownBanner } from "./CountdownBanner";
 import { PackageCard } from "./PackageCard";
@@ -70,8 +71,8 @@ export function PackagesPage({
         <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
           <Link href="/" className="flex items-center justify-self-start">
             <Image
-              src="/images/vodacom-logo.svg"
-              alt="Vodacom AI"
+              src={brand.logo}
+              alt={brand.logoAlt}
               width={160}
               height={36}
               style={{ width: "auto", height: "auto" }}
@@ -80,7 +81,7 @@ export function PackagesPage({
           </Link>
 
           <nav className="hidden items-center gap-6 justify-self-center md:flex">
-            <a href="#plans" className="text-sm font-medium text-[#e60000]">
+            <a href="#plans" className="text-sm font-medium text-brand-ink">
               Packages
             </a>
             <Link
@@ -114,7 +115,7 @@ export function PackagesPage({
               ) : null}
               <button
                 type="button"
-                className="rounded-full border border-[#e60000] px-4 py-2 text-sm font-bold text-[#e60000]"
+                className="rounded-full border border-primary px-4 py-2 text-sm font-bold text-brand-ink"
               >
                 Login
               </button>
@@ -153,15 +154,15 @@ export function PackagesPage({
 
       <main id="plans" className="mx-auto max-w-6xl px-4 pb-20 pt-10 sm:px-6">
         <div className="text-center">
-          <span className="inline-flex rounded-full bg-[#ffe5e5] px-3 py-1 text-xs font-bold text-[#e60000]">
-            Vodacom AI Credits
+          <span className="inline-flex rounded-full bg-brand-muted px-3 py-1 text-xs font-bold text-brand-ink">
+            {brand.productName} Credits
           </span>
           <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl">
             Choose Your Package
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
             Simple Rand pricing for AI Credits. Configure wholesale logic in{" "}
-            <Link href="/pricing-studio" className="font-semibold text-[#e60000]">
+            <Link href="/pricing-studio" className="font-semibold text-brand-ink">
               Pricing Studio
             </Link>
             .
@@ -171,8 +172,7 @@ export function PackagesPage({
             onClick={registerSecretClick}
             title="Demo disclaimer"
           >
-            Huawei Cloud demo environment — designs above are for Vodacom
-            customer reference only (not an official Vodacom product).
+            {brand.disclaimer}
           </p>
         </div>
 
@@ -190,7 +190,7 @@ export function PackagesPage({
               className={cn(
                 "flex-1 rounded-full px-4 py-2.5 text-sm font-bold transition-colors",
                 audience === key
-                  ? "bg-[#e60000] text-white"
+                  ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -216,7 +216,7 @@ export function PackagesPage({
             }
             className={cn(
               "relative h-7 w-12 rounded-full transition-colors",
-              billing === "yearly" ? "bg-[#e60000]" : "bg-[#cfcfcf]"
+              billing === "yearly" ? "bg-primary" : "bg-[#cfcfcf]"
             )}
           >
             <span
@@ -292,7 +292,7 @@ export function PackagesPage({
               </li>
               <li>
                 Annual plans divide the once-off price by 12 before comparing to
-                monthly cost. Both figures are Vodacom planning metrics, never
+                monthly cost. Both figures are {brand.name} planning metrics, never
                 consumer-facing claims.
               </li>
             </ul>
@@ -304,8 +304,8 @@ export function PackagesPage({
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>
             <Image
-              src="/images/vodacom-logo.svg"
-              alt="Vodacom AI"
+              src={brand.logo}
+              alt={brand.logoAlt}
               width={140}
               height={32}
               style={{ width: "auto", height: "auto" }}
@@ -314,14 +314,14 @@ export function PackagesPage({
               className="mt-2 max-w-md cursor-default text-xs text-muted-foreground"
               onClick={registerSecretClick}
             >
-              Huawei Cloud demo environment. Designs are for Vodacom customer
-              reference only — not an official Vodacom product. No payment or
-              backend connected.
+              Huawei Cloud demo environment. Designs are for {brand.name}{" "}
+              customer reference only — not an official {brand.name} product. No
+              payment or backend connected.
             </p>
           </div>
           <Link
             href="/pricing-studio"
-            className="btn-vodacom inline-flex rounded-full px-5 py-2.5 text-sm font-bold"
+            className="btn-brand inline-flex rounded-full px-5 py-2.5 text-sm font-bold"
           >
             Open Pricing Studio
           </Link>

@@ -10,7 +10,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:mtn": "NEXT_PUBLIC_BRAND=mtn NEXT_PUBLIC_BASE_PATH=/MTN next build",
     "start": "next start",
+    "start:mtn": "NEXT_PUBLIC_BRAND=mtn NEXT_PUBLIC_BASE_PATH=/MTN next start -p 3001",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "verify:pricing": "node --experimental-loader ./scripts/ts-loader.mjs scripts/verify-pricing.ts",

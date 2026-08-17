@@ -1,3 +1,4 @@
+import { brand } from "@/lib/brand";
 import type { Audience, Billing, PricingState, StorefrontPlan } from "./types";
 import { DEFAULT_STATE, HUAWEI_MAAS_MODELS, templateState } from "./templates";
 import {
@@ -9,7 +10,8 @@ import {
   tiersLabel,
 } from "./formulas";
 
-export const STORAGE_KEY = "vodacom-ai-pricing-state-v4";
+export const STORAGE_KEY = `${brand.id}-ai-pricing-state-v4`;
+export const PRICING_EVENT = `${brand.id}-pricing-updated`;
 
 function withFreshModels(state: PricingState): PricingState {
   const needsModelRefresh =
@@ -46,7 +48,7 @@ export function loadPricingState(): PricingState {
 export function savePricingState(state: PricingState) {
   if (typeof window === "undefined") return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  window.dispatchEvent(new Event("vodacom-pricing-updated"));
+  window.dispatchEvent(new Event(PRICING_EVENT));
 }
 
 export function applyTemplate(id: "A" | "B") {

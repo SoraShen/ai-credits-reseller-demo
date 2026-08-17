@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { brand } from "@/lib/brand";
 import {
   faceValueZar,
   formatPct,
@@ -118,7 +119,7 @@ export function FxPurchasingPower({
   }, [params, pkg, model, inputTok, outputTok, points]);
 
   const row = math.rows[idx];
-  const copy = lang === "zh" ? ZH : EN;
+  const copy = lang === "zh" ? zhCopy(brand.name) : enCopy(brand.name);
 
   const pad = max - min || 1;
   const y = (v: number) => 100 - ((v - min) / pad) * 78 - 12;
@@ -159,7 +160,7 @@ export function FxPurchasingPower({
           <button
             type="button"
             onClick={() => setPlaying((p) => !p)}
-            className="btn-vodacom w-full rounded-full px-4 py-2 text-sm font-bold"
+            className="btn-brand w-full rounded-full px-4 py-2 text-sm font-bold"
           >
             {playing ? copy.pause : copy.play}
           </button>
@@ -193,7 +194,7 @@ export function FxPurchasingPower({
             <path
               d={path}
               fill="none"
-              stroke="#e60000"
+              stroke="var(--brand)"
               strokeWidth="2"
               vectorEffect="non-scaling-stroke"
             />
@@ -205,7 +206,7 @@ export function FxPurchasingPower({
               className={cn(
                 "absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-all",
                 i === idx
-                  ? "size-3 bg-[#e60000] ring-4 ring-[#e60000]/20"
+                  ? "size-3 bg-primary ring-4 ring-primary/20"
                   : "size-1.5 bg-[#cfcfcf]"
               )}
               style={{ left: `${x(i)}%`, top: `${y(p.usdZar)}%` }}
@@ -238,15 +239,15 @@ export function FxPurchasingPower({
             setPlaying(false);
             setIdx(Number(e.target.value));
           }}
-          className="mt-2 w-full accent-[#e60000]"
+          className="mt-2 w-full accent-brand"
         />
         <p className="mt-1 text-center text-sm font-bold">
           {current.label} · {copy.fx}{" "}
-          <span className="text-[#e60000]">{current.usdZar.toFixed(2)}</span>{" "}
+          <span className="text-brand-ink">{current.usdZar.toFixed(2)}</span>{" "}
           <span
             className={cn(
               "text-xs font-semibold",
-              current.usdZar <= math.fx0 ? "text-[#0b7a3e]" : "text-[#e60000]"
+              current.usdZar <= math.fx0 ? "text-[#0b7a3e]" : "text-brand-ink"
             )}
           >
             ({current.usdZar <= math.fx0 ? copy.randStronger : copy.randWeaker})
@@ -289,11 +290,11 @@ export function FxPurchasingPower({
       </div>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        <div className="rounded-xl bg-[#fff1f1] p-4">
-          <p className="text-xs font-bold uppercase tracking-wide text-[#e60000]">
+        <div className="rounded-xl bg-brand-soft p-4">
+          <p className="text-xs font-bold uppercase tracking-wide text-brand-ink">
             {copy.swingA}
           </p>
-          <p className="mt-1 text-2xl font-extrabold tabular-nums text-[#e60000]">
+          <p className="mt-1 text-2xl font-extrabold tabular-nums text-brand-ink">
             {formatZar(math.profitSpread)}
           </p>
           <p className="text-[11px] text-muted-foreground">{copy.swingANote}</p>
@@ -359,7 +360,7 @@ function ScenarioCard({
       className={cn(
         "rounded-2xl border p-4",
         tone === "risk"
-          ? "border-[#e60000]/30 bg-[#fffafa]"
+          ? "border-primary/30 bg-brand-soft"
           : "border-[#1849a9]/25 bg-[#f8faff]"
       )}
     >
@@ -367,7 +368,7 @@ function ScenarioCard({
         className={cn(
           "inline-flex rounded-full px-2 py-0.5 text-[11px] font-bold",
           tone === "risk"
-            ? "bg-[#ffe5e5] text-[#e60000]"
+            ? "bg-brand-muted text-brand-ink"
             : "bg-[#e4ecff] text-[#1849a9]"
         )}
       >
@@ -410,7 +411,7 @@ function ScenarioCard({
         <div
           className={cn(
             "h-full rounded-full transition-all duration-500",
-            margin < 0.15 ? "bg-[#e60000]" : "bg-[#0b7a3e]"
+            margin < 0.15 ? "bg-primary" : "bg-[#0b7a3e]"
           )}
           style={{ width: `${bar}%` }}
         />
@@ -436,7 +437,7 @@ function Line({
       <dd
         className={cn(
           "font-bold tabular-nums",
-          danger ? "text-[#e60000]" : "text-foreground"
+          danger ? "text-brand-ink" : "text-foreground"
         )}
       >
         {value}
@@ -463,12 +464,13 @@ function deltaZar(value: number, base: number) {
   return `${d > 0 ? "+" : "−"}${formatZar(Math.abs(d))}`;
 }
 
-type Copy = typeof EN;
+type Copy = ReturnType<typeof enCopy>;
 
-const EN = {
+function enCopy(name: string) {
+  return {
   title: "6 · FX risk: who owns it, and what it costs",
   subtitle:
-    "Huawei Cloud MaaS bills in USD; Vodacom settles Huawei in Rand and sells Rand-priced Credits. The shelf price is Rand-stable either way — the design choice is whether Vodacom's margin absorbs the FX move, or the Credits quota quietly buys more/fewer requests.",
+    `Huawei Cloud MaaS bills in USD; ${name} settles Huawei in Rand and sells Rand-priced Credits. The shelf price is Rand-stable either way — the design choice is whether ${name}'s margin absorbs the FX move, or the Credits quota quietly buys more/fewer requests.`,
   play: "Play",
   pause: "Pause",
   fx: "Spot USD/ZAR",
@@ -480,7 +482,7 @@ const EN = {
   utilisation: "assumed quota burn",
   inTok: "Input tokens / request",
   outTok: "Output tokens / request",
-  aBadge: "Model A — Vodacom owns the FX",
+  aBadge: `Model A — ${name} owns the FX`,
   aTitle: "Fixed Credits anchor, fixed quota",
   aNote:
     "Anchor stays at the launch rate. The Rand cost of the USD bill moves with FX, so margin is the shock absorber.",
@@ -490,29 +492,31 @@ const EN = {
     "Credits per USD is retuned each period, so Rand profit lands on plan and the quota's real reach moves instead. Invisible on the bill.",
   userRequests: "Requests the quota buys",
   stable: "unchanged by FX",
-  cost: "Vodacom cost (ZAR)",
-  profit: "Vodacom gross profit",
+  cost: `${name} cost (ZAR)`,
+  profit: `${name} gross profit`,
   margin: "Gross margin",
   swingA: "Model A profit swing across the period",
-  swingANote: "Per subscriber per month — this is the exposure Vodacom carries.",
+  swingANote: `Per subscriber per month — this is the exposure ${name} carries.`,
   swingB: "Model B request swing across the period",
   swingBNote:
     "Per subscriber per month — the same exposure, expressed as purchasing power.",
   logicTitle: "How to run this conversation",
   logic: [
     "Both models keep the storefront in Rand. Neither shows a USD anchor or a margin figure to the subscriber.",
-    "Model A is the customer-friendliest promise and the honest cost of it is a swinging margin — quantify it before committing.",
+    `Model A is the customer-friendliest promise and the honest cost of it is a swinging margin — quantify it before ${name} commits.`,
     "Model B holds margin flat by retuning the anchor; the subscriber still sees one Rand price and one Credits number, so the adjustment is not visible on the bill.",
     "A middle path usually wins: re-peg only outside a tolerance band (say ±5% FX), and publish Credits quotas rather than token counts so you keep the room to do it.",
     "Say the quiet part internally: Model B moves FX upside and downside onto the subscriber. Decide deliberately, document it, and keep the quota generous enough that the change stays below the noticeable threshold.",
   ],
   note: "Illustrative FX path shaped on published Rand-per-USD ranges — for customer storytelling, not a live market feed. Quota burn is inferred so the anchor and the design margin agree at the planning rate.",
-};
+  };
+}
 
-const ZH: Copy = {
+function zhCopy(name: string) {
+  return {
   title: "6 · 汇率风险：谁来承担，代价多大",
   subtitle:
-    "华为云 MaaS 以美元计价；Vodacom 以兰特与华为云结算，再以兰特套餐售给终端用户。两种设计下前台标价都是兰特稳定的，真正的选择是：让 Vodacom 的毛利吸收汇率波动，还是让同样的 Credits 额度悄悄买到更多/更少的请求。",
+    `华为云 MaaS 以美元计价；${name} 以兰特与华为云结算，再以兰特套餐售给终端用户。两种设计下前台标价都是兰特稳定的，真正的选择是：让 ${name} 的毛利吸收汇率波动，还是让同样的 Credits 额度悄悄买到更多/更少的请求。`,
   play: "播放",
   pause: "暂停",
   fx: "即期 USD/ZAR",
@@ -524,7 +528,7 @@ const ZH: Copy = {
   utilisation: "假设额度消耗率",
   inTok: "每请求输入 Token",
   outTok: "每请求输出 Token",
-  aBadge: "模式 A — Vodacom 承担汇率",
+  aBadge: `模式 A — ${name} 承担汇率`,
   aTitle: "锚定固定、额度固定",
   aNote:
     "Credits 锚点保持发布时的汇率。美元账单折算成兰特随汇率变化，毛利成为缓冲垫。",
@@ -534,20 +538,21 @@ const ZH: Copy = {
     "每期重设每美元 Credits，兰特利润回到计划值，波动改由额度的实际可用量吸收，账单上看不出来。",
   userRequests: "该额度可支撑的请求数",
   stable: "不受汇率影响",
-  cost: "Vodacom 成本（兰特）",
-  profit: "Vodacom 毛利额",
+  cost: `${name} 成本（兰特）`,
+  profit: `${name} 毛利额`,
   margin: "毛利率",
   swingA: "模式 A 期内毛利波动区间",
-  swingANote: "单用户单月 —— 这就是 Vodacom 实际承担的敞口。",
+  swingANote: `单用户单月 —— 这就是 ${name} 实际承担的敞口。`,
   swingB: "模式 B 期内请求数波动区间",
   swingBNote: "单用户单月 —— 同样的敞口，换成购买力来表达。",
   logicTitle: "跟客户怎么谈",
   logic: [
     "两种模式的前台都是纯兰特：不出现美元锚点，也不出现毛利数字。",
-    "模式 A 对用户最友好，代价是毛利随汇率摆动 —— 先把这个敞口算清楚再承诺。",
+    `模式 A 对用户最友好，代价是毛利随汇率摆动 —— 先把这个敞口算清楚再承诺。`,
     "模式 B 通过重设锚点稳住毛利；用户看到的仍是一个兰特价格和一个 Credits 数字，调整不体现在账单上。",
     "通常折中方案最实用：设置容忍带（例如汇率 ±5%）之外才重设锚点，并且对外只公布 Credits 额度而非 Token 数，保留调整空间。",
     "内部要把话说透：模式 B 把汇率的红利与风险一并转给用户。这个决定要有意识地做、留档，并把额度留足，让调整幅度低于用户可感知的阈值。",
   ],
   note: "汇率路径依据公开的兰特兑美元区间构造，仅用于客户讲解，非实时行情。额度消耗率由锚点与设计毛利在规划汇率下反推得到，保证两者自洽。",
-};
+  };
+}

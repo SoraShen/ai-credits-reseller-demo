@@ -1,10 +1,18 @@
+import { brand } from "@/lib/brand";
+
 export type Lang = "en" | "zh";
 
-export const COPY = {
+function fill(s: string) {
+  return s
+    .replaceAll("{product}", brand.productName)
+    .replaceAll("{name}", brand.name);
+}
+
+const COPY_RAW = {
   en: {
     title: "Pricing Studio",
     subtitle:
-      "Configure Vodacom AI Credits logic, pick a sample template, and sync prices to the storefront.",
+      "Configure {product} Credits logic, pick a sample template, and sync prices to the storefront.",
     back: "Back to Packages",
     apply: "Apply to storefront",
     applied: "Applied — storefront updated",
@@ -63,7 +71,7 @@ export const COPY = {
     bonusNote:
       "Revenue unchanged; cost rises with gifted Credits",
     gmExplain:
-      "Gross Margin (GM) = planned profit share after estimated MaaS cost. For Vodacom partner planning only — hide on the consumer storefront.",
+      "Gross Margin (GM) = planned profit share after estimated MaaS cost. For {name} partner planning only — hide on the consumer storefront.",
     fxPower: "6 · FX & purchasing power",
     simFormula:
       "Credits = (input$/MTok×tokens + output$/MTok×tokens) / 1e6 × tierCoeff × creditsPerUsd",
@@ -83,7 +91,7 @@ export const COPY = {
   zh: {
     title: "定价工作室",
     subtitle:
-      "配置 Vodacom AI Credits 定价逻辑，选择样本模板，并同步到前台套餐页。",
+      "配置 {product} Credits 定价逻辑，选择样本模板，并同步到前台套餐页。",
     back: "返回套餐页",
     apply: "应用到前台",
     applied: "已应用 — 前台套餐已更新",
@@ -141,7 +149,7 @@ export const COPY = {
     colBonusNote: "说明",
     bonusNote: "收入不变，成本随赠送 Credits 上升",
     gmExplain:
-      "毛利率（Gross Margin）= 扣除预估 MaaS 成本后的计划利润占比。仅供 Vodacom 合作方内部规划，不对终端用户展示。",
+      "毛利率（Gross Margin）= 扣除预估 MaaS 成本后的计划利润占比。仅供 {name} 合作方内部规划，不对终端用户展示。",
     fxPower: "6 · 汇率与购买力",
     simFormula:
       "Credits = (输入价×输入Token + 输出价×输出Token) / 1e6 × 梯级系数 × 每美元Credits",
@@ -159,6 +167,19 @@ export const COPY = {
     ] as Array<[string, number]>,
   },
 } as const;
+
+function fillLang<T extends Record<string, unknown>>(lang: T): T {
+  const out = { ...lang } as Record<string, unknown>;
+  for (const [k, v] of Object.entries(lang)) {
+    if (typeof v === "string") out[k] = fill(v);
+  }
+  return out as T;
+}
+
+export const COPY = {
+  en: fillLang(COPY_RAW.en),
+  zh: fillLang(COPY_RAW.zh),
+} as typeof COPY_RAW;
 
 export const PHILOSOPHY = {
   zh: [

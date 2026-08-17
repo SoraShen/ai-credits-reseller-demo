@@ -1,8 +1,9 @@
 "use client";
 
+import { brand } from "@/lib/brand";
 import { useCallback, useRef, useSyncExternalStore } from "react";
 
-export const PARTNER_VIEW_KEY = "vodacom-partner-view";
+export const PARTNER_VIEW_KEY = `${brand.id}-partner-view`;
 
 interface PartnerState {
   unlocked: boolean;
@@ -57,8 +58,7 @@ function subscribe(listener: () => void) {
 }
 
 /**
- * Hidden switch between the end-customer storefront and the Vodacom-partner
- * preview. Unlock with Alt+Shift+P, or 5 clicks on the demo disclaimer.
+ * Hidden switch between the end-customer storefront and the partner preview.
  */
 export function usePartnerView() {
   const state = useSyncExternalStore(

@@ -1,0 +1,7 @@
+<svg width="180" height="40" viewBox="0 0 180 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MTN AI">
+  <!-- MTN yellow oval mark -->
+  <ellipse cx="20" cy="20" rx="18" ry="14" fill="#FFCB05"/>
+  <text x="9.5" y="25" fill="#000000" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="13" font-weight="900" letter-spacing="-0.6">MTN</text>
+  <text x="46" y="27" fill="#000000" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="800" letter-spacing="-0.4">mtn</text>
+  <text x="98" y="27" fill="#000000" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600" letter-spacing="-0.4">ai</text>
+</svg>

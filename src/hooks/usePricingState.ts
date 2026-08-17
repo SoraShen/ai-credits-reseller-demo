@@ -2,14 +2,13 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import {
+  PRICING_EVENT,
   STORAGE_KEY,
   loadPricingState,
   savePricingState,
 } from "@/lib/pricing/storage";
 import type { PricingState } from "@/lib/pricing/types";
 import { DEFAULT_STATE } from "@/lib/pricing/templates";
-
-const PRICING_EVENT = "vodacom-pricing-updated";
 
 // getSnapshot must be referentially stable, so re-parse only when the raw
 // localStorage value actually changed.
@@ -47,7 +46,6 @@ export function usePricingState() {
     getSnapshot,
     () => DEFAULT_STATE
   );
-  // False during SSR and the hydration pass, true once we are on the client.
   const ready = useSyncExternalStore(
     noopSubscribe,
     () => true,

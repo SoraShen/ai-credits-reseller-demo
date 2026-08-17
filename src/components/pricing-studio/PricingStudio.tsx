@@ -15,6 +15,7 @@ import {
   formatZarPrecise,
   planPricing,
 } from "@/lib/pricing/formulas";
+import { brand } from "@/lib/brand";
 import { COPY, PHILOSOPHY, type Lang } from "@/lib/pricing/i18n";
 import { applyTemplate } from "@/lib/pricing/storage";
 import type { PackageRow, PricingState } from "@/lib/pricing/types";
@@ -107,12 +108,12 @@ export function PricingStudio() {
   ] as const;
 
   return (
-    <div className="min-h-screen bg-[#f6f7f9]">
+    <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-[#e60000]">
-              Vodacom AI
+            <p className="text-xs font-bold uppercase tracking-wide text-brand-ink">
+              {brand.productName}
             </p>
             <h1 className="text-xl font-extrabold">{t.title}</h1>
           </div>
@@ -126,7 +127,7 @@ export function PricingStudio() {
                   className={cn(
                     "rounded-full px-3 py-1 text-xs font-bold",
                     lang === l
-                      ? "bg-[#e60000] text-white"
+                      ? "bg-primary text-primary-foreground"
                       : "text-muted-foreground"
                   )}
                 >
@@ -143,7 +144,7 @@ export function PricingStudio() {
             <button
               type="button"
               onClick={applyCurrent}
-              className="btn-vodacom rounded-full px-4 py-1.5 text-xs font-bold"
+              className="btn-brand rounded-full px-4 py-1.5 text-xs font-bold"
             >
               {t.apply}
             </button>
@@ -174,7 +175,7 @@ export function PricingStudio() {
                 className={cn(
                   "rounded-2xl border bg-white p-5 shadow-card",
                   state.templateId === id
-                    ? "border-[#e60000] ring-1 ring-[#e60000]/30"
+                    ? "border-primary ring-1 ring-primary/30"
                     : "border-border"
                 )}
               >
@@ -184,7 +185,7 @@ export function PricingStudio() {
                     <p className="mt-1 text-sm text-muted-foreground">{desc}</p>
                   </div>
                   {state.templateId === id ? (
-                    <span className="rounded-full bg-[#ffe5e5] px-2 py-0.5 text-[11px] font-bold text-[#e60000]">
+                    <span className="rounded-full bg-brand-muted px-2 py-0.5 text-[11px] font-bold text-brand-ink">
                       {t.active}
                     </span>
                   ) : null}
@@ -192,7 +193,7 @@ export function PricingStudio() {
                 <button
                   type="button"
                   onClick={() => selectTemplate(id)}
-                  className="btn-vodacom mt-4 rounded-full px-4 py-2 text-sm font-bold"
+                  className="btn-brand mt-4 rounded-full px-4 py-2 text-sm font-bold"
                 >
                   {t.select}
                 </button>
@@ -205,8 +206,8 @@ export function PricingStudio() {
           <h2 className="text-lg font-extrabold">{t.philosophy}</h2>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             {PHILOSOPHY[lang].map((item) => (
-              <div key={item.t} className="rounded-xl bg-[#fff8f8] p-4">
-                <p className="font-bold text-[#e60000]">{item.t}</p>
+              <div key={item.t} className="rounded-xl bg-brand-soft p-4">
+                <p className="font-bold text-brand-ink">{item.t}</p>
                 <p className="mt-1 text-sm text-muted-foreground">{item.d}</p>
               </div>
             ))}
@@ -233,7 +234,7 @@ export function PricingStudio() {
             <label className="flex items-start gap-2 text-sm sm:col-span-2 lg:col-span-3">
               <input
                 type="checkbox"
-                className="mt-1 size-4 accent-[#e60000]"
+                className="mt-1 size-4 accent-brand"
                 checked={state.params.promoStacksOnAnnual === true}
                 onChange={(e) =>
                   patchParams({ promoStacksOnAnnual: e.target.checked })
@@ -269,7 +270,7 @@ export function PricingStudio() {
               className={
                 safetyOk(state.params, state.params.promoDiscount)
                   ? "font-bold text-[#0b7a3e]"
-                  : "font-bold text-[#e60000]"
+                  : "font-bold text-brand-ink"
               }
             >
               {safetyOk(state.params, state.params.promoDiscount)
@@ -288,7 +289,7 @@ export function PricingStudio() {
           <p className="mt-1 text-xs text-muted-foreground">
             {t.modelSource}{" "}
             <a
-              className="text-[#e60000] underline"
+              className="text-brand-ink underline"
               href="https://support.huaweicloud.com/intl/en-us/price-maas/price-maas-0002.html"
               target="_blank"
               rel="noreferrer"
@@ -395,7 +396,7 @@ export function PricingStudio() {
                           className={cn(
                             "py-2 pr-3 tabular-nums",
                             bad
-                              ? "font-semibold text-[#e60000]"
+                              ? "font-semibold text-brand-ink"
                               : "text-[#0b7a3e]"
                           )}
                         >
@@ -480,14 +481,14 @@ export function PricingStudio() {
               />
             </label>
           </div>
-          <div className="mt-4 rounded-xl bg-[#fff1f1] p-4 text-sm">
+          <div className="mt-4 rounded-xl bg-brand-soft p-4 text-sm">
             <p>
               <span className="text-muted-foreground">{t.simApi}: </span>
               <strong>${sim.usd.toFixed(6)}</strong>
             </p>
             <p className="mt-1">
               <span className="text-muted-foreground">{t.simCredits}: </span>
-              <strong className="text-[#e60000]">
+              <strong className="text-brand-ink">
                 {Math.round(sim.credits).toLocaleString("en-ZA")} (
                 {formatCredits(sim.credits)})
               </strong>
@@ -549,7 +550,7 @@ function PackageTable({
 }) {
   return (
     <div className="mt-5">
-      <h3 className="font-bold text-[#e60000]">{title}</h3>
+      <h3 className="font-bold text-brand-ink">{title}</h3>
       <div className="mt-2 overflow-x-auto">
         <table className="min-w-full text-left text-sm">
           <thead>
@@ -608,7 +609,7 @@ function PackageTable({
                     className={cn(
                       "py-2 pr-2 tabular-nums",
                       promo.margin < 0.2
-                        ? "text-[#e60000]"
+                        ? "text-brand-ink"
                         : "text-[#0b7a3e]"
                     )}
                   >
@@ -621,7 +622,7 @@ function PackageTable({
                     className={cn(
                       "py-2 pr-2 tabular-nums",
                       yearlyPlan.effectiveMargin < 0.15
-                        ? "text-[#e60000]"
+                        ? "text-brand-ink"
                         : "text-[#0b7a3e]"
                     )}
                   >
