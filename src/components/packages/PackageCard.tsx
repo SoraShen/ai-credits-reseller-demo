@@ -17,6 +17,12 @@ export function PackageCard({
   if (brand.id === "rain") {
     return <RainPackageCard plan={plan} partnerView={partnerView} />;
   }
+  if (brand.id === "mt") {
+    return <MtPackageCard plan={plan} partnerView={partnerView} />;
+  }
+  if (brand.id === "cellc") {
+    return <CellcPackageCard plan={plan} partnerView={partnerView} />;
+  }
   return <DefaultPackageCard plan={plan} partnerView={partnerView} />;
 }
 
@@ -125,13 +131,13 @@ function RainPackageCard({
         {hasDiscount ? (
           <p className="text-sm text-[#8a97a5] line-through">
             {plan.currency}
-            {plan.priceOriginal.toLocaleString("en-ZA")}
+            {plan.priceOriginal.toLocaleString(brand.locale)}
           </p>
         ) : null}
         <div className="flex items-end gap-1.5">
           <span className="text-4xl font-semibold tracking-tight text-[#0077C8]">
             {plan.currency}
-            {plan.price.toLocaleString("en-ZA")}
+            {plan.price.toLocaleString(brand.locale)}
           </span>
         </div>
         <p className="mt-0.5 text-xs text-[#8a97a5]">
@@ -359,6 +365,241 @@ function MtnPackageCard({
   );
 }
 
+function MtPackageCard({
+  plan,
+  partnerView,
+}: {
+  plan: StorefrontPlan;
+  partnerView: boolean;
+}) {
+  const hasDiscount = plan.price < plan.priceOriginal;
+
+  return (
+    <article
+      className={cn(
+        "relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white",
+        plan.popular
+          ? "border-[#00B4C8] shadow-[0_12px_40px_rgba(20,0,120,0.12)]"
+          : "border-[#d9e0ea]"
+      )}
+    >
+      <div className="bg-[#140078] px-5 py-4 text-white">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#5ecbd6]">
+          {plan.popular ? "Recommended" : "AI Credits"}
+          {plan.discountLabel ? ` · ${plan.discountLabel}` : ""}
+        </p>
+        <h3 className="mt-1 text-xl font-semibold tracking-tight">{plan.name}</h3>
+        <p className="mt-0.5 text-sm text-white/70">{plan.tiersLabel}</p>
+      </div>
+
+      <div className="flex flex-1 flex-col px-5 pb-5 pt-5">
+        {hasDiscount ? (
+          <p className="text-sm text-[#8a97a5] line-through">
+            {plan.currency}
+            {plan.priceOriginal.toLocaleString(brand.locale)}
+          </p>
+        ) : null}
+        <div className="flex items-end gap-1.5">
+          <span className="text-4xl font-semibold tracking-tight text-[#140078]">
+            {plan.currency}
+            {plan.price.toLocaleString(brand.locale)}
+          </span>
+        </div>
+        <p className="mt-0.5 text-xs text-[#8a97a5]">{plan.period}</p>
+        {plan.monthlyEquivalentLabel ? (
+          <p className="mt-1 text-xs text-[#8a97a5]">{plan.monthlyEquivalentLabel}</p>
+        ) : null}
+        {plan.savingsLabel ? (
+          <p className="mt-2 text-xs font-semibold text-[#00B4C8]">{plan.savingsLabel}</p>
+        ) : null}
+
+        <p className="mt-5 text-sm text-[#07003a]">
+          <span className="font-semibold">{plan.creditsLabel}</span>
+        </p>
+        {plan.creditsSubLabel ? (
+          <p className="mt-0.5 text-xs text-[#8a97a5]">{plan.creditsSubLabel}</p>
+        ) : null}
+        <p className="mt-0.5 text-xs text-[#8a97a5]">{plan.unitPriceLabel}</p>
+
+        {partnerView ? (
+          <p
+            className={cn(
+              "mt-3 rounded-xl bg-[#140078]/5 px-2 py-1 text-[11px] font-semibold",
+              plan.effectiveMargin < 0.15 ? "text-[#b00000]" : "text-[#0b7a3e]"
+            )}
+          >
+            {plan.marginLabel} · {plan.effectiveMarginLabel}
+          </p>
+        ) : null}
+
+        <ul className="mt-5 space-y-3">
+          <li className="flex items-start gap-2.5 text-sm text-[#07003a]">
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#00B4C8]" strokeWidth={2.5} />
+            <span>Priced in rupees — no FX surprise on your bill</span>
+          </li>
+          {plan.features.slice(0, 5).map((f) => (
+            <li key={f} className="flex items-start gap-2.5 text-sm text-[#07003a]">
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#00B4C8]" strokeWidth={2.5} />
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
+
+        <button
+          type="button"
+          className={cn(
+            "mt-auto w-full rounded-full px-4 py-3.5 text-sm font-semibold transition-colors",
+            plan.popular
+              ? "bg-[#00B4C8] text-[#07003a] hover:brightness-95"
+              : "bg-[#140078] text-white hover:bg-[#1b1488]"
+          )}
+          style={{ marginTop: "1.75rem" }}
+        >
+          {plan.cta}
+        </button>
+
+        <div className="mt-4 border-t border-[#eef1f5] pt-3">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#8a97a5]">
+            Models
+          </p>
+          <ul className="mt-1.5 space-y-1 text-xs text-[#8a97a5]">
+            {plan.models.slice(0, 5).map((m) => (
+              <li key={m}>{m}</li>
+            ))}
+            {plan.models.length > 5 ? (
+              <li className="font-semibold text-[#140078]">
+                +{plan.models.length - 5} more
+              </li>
+            ) : null}
+          </ul>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function CellcPackageCard({
+  plan,
+  partnerView,
+}: {
+  plan: StorefrontPlan;
+  partnerView: boolean;
+}) {
+  const hasDiscount = plan.price < plan.priceOriginal;
+
+  return (
+    <article
+      className={cn(
+        "relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white",
+        plan.popular
+          ? "border-[#ea5b0c] shadow-[0_14px_40px_rgba(234,91,12,0.18)]"
+          : "border-[#d6d6d6]"
+      )}
+    >
+      <div className="bg-[#0f0f0f] px-5 py-4 text-white">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#ea5b0c]">
+            {plan.popular ? "Most popular" : "AI Credits"}
+          </p>
+          {plan.discountLabel ? (
+            <span className="rounded-full bg-[#ea5b0c] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+              {plan.discountLabel}
+            </span>
+          ) : null}
+        </div>
+        <h3 className="mt-1 text-xl font-bold tracking-tight">{plan.name}</h3>
+        <p className="mt-0.5 text-sm text-white/65">{plan.tiersLabel}</p>
+      </div>
+
+      <div className="flex flex-1 flex-col px-5 pb-5 pt-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+          From
+        </p>
+        {hasDiscount ? (
+          <p className="text-sm text-[#6b6b6b] line-through">
+            {plan.currency}
+            {plan.priceOriginal.toLocaleString(brand.locale)}
+          </p>
+        ) : null}
+        <div className="flex items-end gap-1.5">
+          <span className="text-4xl font-extrabold tracking-tight text-[#ea5b0c]">
+            {plan.currency}
+            {plan.price.toLocaleString(brand.locale)}
+          </span>
+        </div>
+        <p className="mt-0.5 text-xs text-[#6b6b6b]">{plan.period}</p>
+        {plan.monthlyEquivalentLabel ? (
+          <p className="mt-1 text-xs text-[#6b6b6b]">{plan.monthlyEquivalentLabel}</p>
+        ) : null}
+        {plan.savingsLabel ? (
+          <p className="mt-2 text-xs font-bold text-[#0f0f0f]">{plan.savingsLabel}</p>
+        ) : null}
+
+        <p className="mt-5 text-sm text-[#0f0f0f]">
+          <span className="font-bold">{plan.creditsLabel}</span>
+        </p>
+        {plan.creditsSubLabel ? (
+          <p className="mt-0.5 text-xs text-[#6b6b6b]">{plan.creditsSubLabel}</p>
+        ) : null}
+        <p className="mt-0.5 text-xs text-[#6b6b6b]">{plan.unitPriceLabel}</p>
+
+        {partnerView ? (
+          <p
+            className={cn(
+              "mt-3 rounded-xl bg-[#0f0f0f]/5 px-2 py-1 text-[11px] font-semibold",
+              plan.effectiveMargin < 0.15 ? "text-[#b00000]" : "text-[#0b7a3e]"
+            )}
+          >
+            {plan.marginLabel} · {plan.effectiveMarginLabel}
+          </p>
+        ) : null}
+
+        <ul className="mt-5 space-y-3">
+          <li className="flex items-start gap-2.5 text-sm text-[#0f0f0f]">
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#ea5b0c]" strokeWidth={2.75} />
+            <span>Priced in Rand — no FX surprise on your bill</span>
+          </li>
+          {plan.features.slice(0, 5).map((f) => (
+            <li key={f} className="flex items-start gap-2.5 text-sm text-[#0f0f0f]">
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#ea5b0c]" strokeWidth={2.75} />
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
+
+        <button
+          type="button"
+          className={cn(
+            "mt-auto w-full rounded-full px-4 py-3.5 text-sm font-bold uppercase tracking-wide transition-colors",
+            plan.popular
+              ? "bg-[#ea5b0c] text-white hover:bg-[#d85109]"
+              : "bg-[#0f0f0f] text-white hover:bg-[#292929]"
+          )}
+          style={{ marginTop: "1.75rem" }}
+        >
+          {plan.cta}
+        </button>
+
+        <div className="mt-4 border-t border-[#ececec] pt-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#6b6b6b]">
+            Models
+          </p>
+          <ul className="mt-1.5 space-y-1 text-xs text-[#6b6b6b]">
+            {plan.models.slice(0, 5).map((m) => (
+              <li key={m}>{m}</li>
+            ))}
+            {plan.models.length > 5 ? (
+              <li className="font-semibold text-[#ea5b0c]">
+                +{plan.models.length - 5} more
+              </li>
+            ) : null}
+          </ul>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function DefaultPackageCard({
   plan,
   partnerView,
@@ -400,13 +641,13 @@ function DefaultPackageCard({
         {hasDiscount ? (
           <p className="text-sm text-muted-foreground line-through">
             {plan.currency}
-            {plan.priceOriginal.toLocaleString("en-ZA")}
+            {plan.priceOriginal.toLocaleString(brand.locale)}
           </p>
         ) : null}
         <div className="flex items-end gap-1">
           <span className="text-3xl font-extrabold tracking-tight text-foreground">
             {plan.currency}
-            {plan.price.toLocaleString("en-ZA")}
+            {plan.price.toLocaleString(brand.locale)}
           </span>
           <span className="mb-1 text-sm text-muted-foreground">{plan.period}</span>
         </div>

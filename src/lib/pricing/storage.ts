@@ -1,10 +1,9 @@
-import { brand } from "@/lib/brand";
+import { brand, formatStorefrontMoney } from "@/lib/brand";
 import type { Audience, Billing, PricingState, StorefrontPlan } from "./types";
 import { DEFAULT_STATE, HUAWEI_MAAS_MODELS, templateState } from "./templates";
 import {
   formatCredits,
   formatPct,
-  formatZar,
   formatZarPrecise,
   planPricing,
   tiersLabel,
@@ -83,7 +82,7 @@ export function toStorefrontPlans(
         priceOriginal: pricing.listPeriod,
         priceYearly: yearlyPricing.payPeriod,
         priceYearlyOriginal: p.yearlyPrice,
-        currency: "R",
+        currency: brand.currency,
         period:
           audience === "business"
             ? yearly
@@ -107,7 +106,7 @@ export function toStorefrontPlans(
             ? `Save ${formatPct(pricing.totalOffVsMonthly)} vs monthly`
             : undefined,
         monthlyEquivalentLabel: yearly
-          ? `≈ ${formatZar(pricing.payMonthly)} / month`
+          ? `≈ ${formatStorefrontMoney(pricing.payMonthly)} / month`
           : undefined,
         bonusLabel: undefined,
         cta: p.cta,
@@ -115,7 +114,7 @@ export function toStorefrontPlans(
         marginLabel: `${formatPct(p.designMargin)} design GM`,
         effectiveMarginLabel: `${formatPct(pricing.effectiveMargin, 1)} GM at this price`,
         effectiveMargin: pricing.effectiveMargin,
-        unitPriceLabel: `${formatZarPrecise(pricing.unitPer1M)} / 1M Credits`,
+        unitPriceLabel: `${formatZarPrecise(pricing.unitPer1M).replace(/^R/, brand.currency)} / 1M Credits`,
         tiersLabel: tiersLabel(p.tiers),
         features: p.features,
         models: p.models,

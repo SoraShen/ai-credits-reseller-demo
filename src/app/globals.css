@@ -195,6 +195,98 @@
   --sidebar-ring: #0077c8;
 }
 
+/* Mauritius Telecom (telecom.mu 2026): indigo #140078 + cyan #00B4C8 + Poppins */
+/* Cell C SA: black + signature orange (ally / challenger brand) */
+[data-brand="cellc"] {
+  --brand: #ea5b0c;
+  --brand-foreground: #ffffff;
+  --brand-soft: #fff1e8;
+  --brand-muted: #ffd7bf;
+  --brand-ink: #0f0f0f;
+  --brand-wash: rgba(234, 91, 12, 0.12);
+  --success: #0b7a3e;
+  --success-soft: #e8f8ef;
+  --info: #dd4814;
+  --info-soft: #fff1e8;
+  --background: #f4f4f4;
+  --foreground: #0f0f0f;
+  --card: #ffffff;
+  --card-foreground: #0f0f0f;
+  --popover: #ffffff;
+  --popover-foreground: #0f0f0f;
+  --primary: #ea5b0c;
+  --primary-foreground: #ffffff;
+  --secondary: #141414;
+  --secondary-foreground: #ffffff;
+  --muted: #e8e8e8;
+  --muted-foreground: #6b6b6b;
+  --accent: #ffd7bf;
+  --accent-foreground: #0f0f0f;
+  --destructive: #b00000;
+  --border: #d6d6d6;
+  --input: #d6d6d6;
+  --ring: #ea5b0c;
+  --chart-1: #ea5b0c;
+  --chart-2: #0f0f0f;
+  --chart-3: #f05a1e;
+  --chart-4: #6b6b6b;
+  --chart-5: #ffd7bf;
+  --radius: 0.75rem;
+  --sidebar: #0f0f0f;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ea5b0c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #292929;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #333333;
+  --sidebar-ring: #ea5b0c;
+}
+
+[data-brand="mt"] {
+  --brand: #00b4c8;
+  --brand-foreground: #07003a;
+  --brand-soft: #e6f8fb;
+  --brand-muted: #c5eef4;
+  --brand-ink: #140078;
+  --brand-wash: rgba(20, 0, 120, 0.1);
+  --success: #0b7a3e;
+  --success-soft: #e8f8ef;
+  --info: #0a6ed2;
+  --info-soft: #e8f1fc;
+  --background: #f4f6fb;
+  --foreground: #07003a;
+  --card: #ffffff;
+  --card-foreground: #07003a;
+  --popover: #ffffff;
+  --popover-foreground: #07003a;
+  --primary: #00b4c8;
+  --primary-foreground: #07003a;
+  --secondary: #e6f8fb;
+  --secondary-foreground: #140078;
+  --muted: #e7ecf3;
+  --muted-foreground: #4a5570;
+  --accent: #c5eef4;
+  --accent-foreground: #140078;
+  --destructive: #b00000;
+  --border: #d9e0ea;
+  --input: #d9e0ea;
+  --ring: #00b4c8;
+  --chart-1: #00b4c8;
+  --chart-2: #140078;
+  --chart-3: #0a6ed2;
+  --chart-4: #07003a;
+  --chart-5: #5ecbd6;
+  --radius: 0.75rem;
+  --sidebar: #140078;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #00b4c8;
+  --sidebar-primary-foreground: #07003a;
+  --sidebar-accent: #1b1488;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #241c8c;
+  --sidebar-ring: #00b4c8;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -207,6 +299,11 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-brand), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  html[data-brand="mt"],
+  html[data-brand="mt"] body {
+    font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   }
 }
 

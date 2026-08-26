@@ -47,6 +47,11 @@ export function PackagesPage({
       : state.templateId === "B"
         ? "Template B · Growth"
         : "Custom";
+  const isMt = brand.id === "mt";
+  const isRain = brand.id === "rain";
+  const isMtn = brand.id === "mtn";
+  const isCellc = brand.id === "cellc";
+  const headerLogo = isMt || isCellc ? brand.logoOnDarkHref : brand.logoHref;
 
   return (
     <div className="page-wash min-h-screen">
@@ -66,26 +71,44 @@ export function PackagesPage({
         </div>
       ) : null}
 
-      <header className="sticky top-0 z-50 border-b border-border/80 bg-white/90 backdrop-blur-xl">
+      <header
+        className={cn(
+          "sticky top-0 z-50",
+          isMt
+            ? "bg-[#140078] text-white"
+            : isCellc
+              ? "bg-[#0f0f0f] text-white"
+              : "border-b border-border/80 bg-white/90 backdrop-blur-xl"
+        )}
+      >
         <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6">
           <Link href="/" className="flex items-center justify-self-start gap-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={brand.logoHref}
+              src={headerLogo}
               alt={brand.logoAlt}
-              width={brand.id === "mtn" ? 64 : brand.id === "rain" ? 104 : 160}
-              height={brand.id === "mtn" ? 32 : brand.id === "rain" ? 32 : 36}
+              width={isMtn ? 64 : isRain ? 104 : isMt ? 176 : isCellc ? 120 : 160}
+              height={isMtn || isRain ? 32 : isMt || isCellc ? 40 : 36}
               className={
-                brand.id === "mtn" || brand.id === "rain" ? "h-8 w-auto" : "h-9 w-auto"
+                isMtn || isRain
+                  ? "h-8 w-auto"
+                  : isMt || isCellc
+                    ? "h-10 w-auto"
+                    : "h-9 w-auto"
               }
             />
-            {brand.id === "mtn" ? (
+            {isMtn ? (
               <span className="text-[1.35rem] font-extrabold leading-none tracking-tight text-black">
                 AI
               </span>
             ) : null}
-            {brand.id === "rain" ? (
+            {isRain ? (
               <span className="text-[1.15rem] font-semibold leading-none tracking-tight text-[#202020]">
+                AI
+              </span>
+            ) : null}
+            {isCellc ? (
+              <span className="text-[1.1rem] font-extrabold leading-none tracking-tight text-[#ea5b0c]">
                 AI
               </span>
             ) : null}
@@ -95,20 +118,41 @@ export function PackagesPage({
             <a
               href="#plans"
               className={cn(
-                "text-sm font-medium text-brand-ink",
-                brand.id === "rain" && "lowercase text-[#202020]"
+                "text-sm font-medium",
+                isMt || isCellc
+                  ? "text-white"
+                  : isRain
+                    ? "lowercase text-[#202020]"
+                    : "text-brand-ink"
               )}
             >
-              {brand.id === "rain" ? "packages" : "Packages"}
+              {isRain ? "packages" : "Packages"}
             </a>
+            <Link
+              href="/image-studio"
+              className={cn(
+                "text-sm font-medium",
+                isMt || isCellc
+                  ? "text-white/75 hover:text-white"
+                  : isRain
+                    ? "lowercase text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {isRain ? "image studio" : "Image Studio"}
+            </Link>
             <Link
               href="/pricing-studio"
               className={cn(
-                "text-sm font-medium text-muted-foreground hover:text-foreground",
-                brand.id === "rain" && "lowercase"
+                "text-sm font-medium",
+                isMt || isCellc
+                  ? "text-white/75 hover:text-white"
+                  : isRain
+                    ? "lowercase text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
               )}
             >
-              {brand.id === "rain" ? "pricing studio" : "Pricing Studio"}
+              {isRain ? "pricing studio" : "Pricing Studio"}
             </Link>
           </nav>
 
@@ -122,14 +166,23 @@ export function PackagesPage({
                     "rounded-full px-3 py-1.5 text-[11px] font-bold",
                     partnerView
                       ? "bg-[#1a1a1a] text-white"
-                      : "border border-border text-muted-foreground"
+                      : isCellc
+                        ? "border border-white/30 text-white/80"
+                        : "border border-border text-muted-foreground"
                   )}
                 >
                   {partnerView ? "Partner view" : "Customer view"}
                 </button>
               ) : null}
               {partnerView ? (
-                <span className="rounded-full border border-border px-3 py-1.5 text-[11px] font-semibold text-muted-foreground">
+                <span
+                  className={cn(
+                    "rounded-full border px-3 py-1.5 text-[11px] font-semibold",
+                    isCellc
+                      ? "border-white/25 text-white/70"
+                      : "border-border text-muted-foreground"
+                  )}
+                >
                   {templateLabel}
                 </span>
               ) : null}
@@ -141,7 +194,11 @@ export function PackagesPage({
                     ? "border-2 border-black text-black"
                     : brand.id === "rain"
                       ? "border border-[#0077C8] text-[#0077C8] lowercase"
-                      : "border border-primary text-brand-ink"
+                      : isMt
+                        ? "bg-[#00B4C8] text-[#07003a]"
+                        : isCellc
+                          ? "bg-[#ea5b0c] text-white"
+                          : "border border-primary text-brand-ink"
                 )}
               >
                 {brand.id === "rain" ? "sign in" : "Login"}
@@ -150,7 +207,10 @@ export function PackagesPage({
 
             <button
               type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border md:hidden"
+              className={cn(
+                "inline-flex h-10 w-10 items-center justify-center rounded-full md:hidden",
+                isMt || isCellc ? "border border-white/25" : "border border-border"
+              )}
               onClick={() => setOpenNav((v) => !v)}
               aria-label="Menu"
             >
@@ -159,10 +219,22 @@ export function PackagesPage({
           </div>
         </div>
         {openNav ? (
-          <div className="space-y-3 border-t border-border bg-white px-4 py-4 md:hidden">
+          <div
+            className={cn(
+              "space-y-3 border-t px-4 py-4 md:hidden",
+              isMt
+                ? "border-white/10 bg-[#0d0060]"
+                : isCellc
+                  ? "border-white/10 bg-[#141414]"
+                  : "border-border bg-white"
+            )}
+          >
             <a href="#plans" className="block text-sm font-medium">
               Packages
             </a>
+            <Link href="/image-studio" className="block text-sm font-medium">
+              Image Studio
+            </Link>
             <Link href="/pricing-studio" className="block text-sm font-medium">
               Pricing Studio
             </Link>
@@ -181,17 +253,23 @@ export function PackagesPage({
 
       <main id="plans" className="mx-auto max-w-6xl px-4 pb-20 pt-10 sm:px-6">
         <div className="text-center">
-          {brand.id === "rain" ? (
+          {isRain ? (
             <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[#7eb8e0]">
               south africa&apos;s unlimited network
+            </p>
+          ) : isCellc ? (
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#ea5b0c]">
+              your ally for AI
             </p>
           ) : (
             <span
               className={cn(
                 "inline-flex rounded-full px-3 py-1 text-xs font-bold",
-                brand.id === "mtn"
+                isMtn
                   ? "bg-[#ffcb05] text-black"
-                  : "bg-brand-muted text-brand-ink"
+                  : isMt
+                    ? "bg-[#00B4C8] text-[#07003a]"
+                    : "bg-brand-muted text-brand-ink"
               )}
             >
               {brand.productName} Credits
@@ -200,14 +278,26 @@ export function PackagesPage({
           <h1
             className={cn(
               "mt-3 text-3xl font-extrabold tracking-tight sm:text-5xl",
-              brand.id === "rain" &&
-                "font-semibold lowercase tracking-tight text-[#202020]"
+              isRain &&
+                "font-semibold lowercase tracking-tight text-[#202020]",
+              isMt && "font-semibold text-[#07003a]",
+              isCellc && "font-extrabold text-[#0f0f0f]"
             )}
           >
-            {brand.id === "rain" ? (
+            {isRain ? (
               <>
                 choose your{" "}
                 <span className="font-bold text-[#0077C8]">unlimited AI.</span>
+              </>
+            ) : isMt ? (
+              <>
+                Choose your package.
+                <span className="block text-[#140078]">Build with AI.</span>
+              </>
+            ) : isCellc ? (
+              <>
+                Choose your package.
+                <span className="block text-[#ea5b0c]">Powered by AI Credits.</span>
               </>
             ) : (
               "Choose Your Package"
@@ -216,10 +306,11 @@ export function PackagesPage({
           <p
             className={cn(
               "mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base",
-              brand.id === "rain" && "lowercase text-[#5a6a7a]"
+              isRain && "lowercase text-[#5a6a7a]",
+              isCellc && "text-[#6b6b6b]"
             )}
           >
-            {brand.id === "rain" ? (
+            {isRain ? (
               <>
                 every plan includes AI Credits priced in Rand on rain&apos;s
                 network. configure wholesale logic in{" "}
@@ -228,6 +319,31 @@ export function PackagesPage({
                   className="font-semibold text-[#0077C8]"
                 >
                   pricing studio
+                </Link>
+                .
+              </>
+            ) : isMt ? (
+              <>
+                Simple rupee pricing for AI Credits — the trusted digital
+                foundation for an AI-powered Mauritius. Configure wholesale
+                logic in{" "}
+                <Link
+                  href="/pricing-studio"
+                  className="font-semibold text-[#140078]"
+                >
+                  Pricing Studio
+                </Link>
+                .
+              </>
+            ) : isCellc ? (
+              <>
+                Bold Rand pricing for AI Credits — value without the fluff.
+                Configure wholesale logic in{" "}
+                <Link
+                  href="/pricing-studio"
+                  className="font-semibold text-[#ea5b0c]"
+                >
+                  Pricing Studio
                 </Link>
                 .
               </>
@@ -366,7 +482,7 @@ export function PackagesPage({
               <li>
                 <strong>Design GM</strong> is the planned profit share after
                 estimated Huawei MaaS cost at monthly list price — 35% GM means
-                ~R0.65 of every Rand of revenue is reserved for model cost and
+                ~R0.65 of every {brand.moneyName} of revenue is reserved for model cost and
                 ops.
               </li>
               <li>
@@ -384,22 +500,32 @@ export function PackagesPage({
         ) : null}
       </main>
 
-      <footer className="border-t border-border bg-white">
+      <footer
+        className={cn(
+          isMt
+            ? "bg-[#030507] text-white"
+            : isCellc
+              ? "bg-[#0f0f0f] text-white"
+              : "border-t border-border bg-white"
+        )}
+      >
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>
             <div className="flex items-center gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={brand.logoHref}
+                src={isMt || isCellc ? brand.logoOnDarkHref : brand.logoHref}
                 alt={brand.logoAlt}
                 width={
-                  brand.id === "mtn" ? 56 : brand.id === "rain" ? 90 : 140
+                  isMtn ? 56 : isRain ? 90 : isMt ? 160 : isCellc ? 110 : 140
                 }
-                height={brand.id === "mtn" || brand.id === "rain" ? 28 : 32}
+                height={isMtn || isRain ? 28 : isMt || isCellc ? 36 : 32}
                 className={
-                  brand.id === "mtn" || brand.id === "rain"
+                  isMtn || isRain
                     ? "h-7 w-auto"
-                    : "h-8 w-auto"
+                    : isMt || isCellc
+                      ? "h-9 w-auto"
+                      : "h-8 w-auto"
                 }
               />
               {brand.id === "mtn" ? (
@@ -412,9 +538,17 @@ export function PackagesPage({
                   AI
                 </span>
               ) : null}
+              {isCellc ? (
+                <span className="text-lg font-extrabold leading-none tracking-tight text-[#ea5b0c]">
+                  AI
+                </span>
+              ) : null}
             </div>
             <p
-              className="mt-2 max-w-md cursor-default text-xs text-muted-foreground"
+              className={cn(
+                "mt-2 max-w-md cursor-default text-xs",
+                isMt || isCellc ? "text-white/55" : "text-muted-foreground"
+              )}
               onClick={registerSecretClick}
             >
               Huawei Cloud demo environment. Designs are for {brand.name}{" "}
