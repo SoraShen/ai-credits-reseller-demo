@@ -87,14 +87,16 @@ export function PackagesPage({
             <img
               src={headerLogo}
               alt={brand.logoAlt}
-              width={isMtn ? 64 : isRain ? 104 : isMt ? 176 : isCellc ? 120 : 160}
-              height={isMtn || isRain ? 32 : isMt || isCellc ? 40 : 36}
+              width={isMtn ? 64 : isRain ? 104 : isMt ? 176 : isCellc ? 168 : 160}
+              height={isMtn || isRain ? 32 : isMt ? 40 : isCellc ? 52 : 36}
               className={
                 isMtn || isRain
                   ? "h-8 w-auto"
-                  : isMt || isCellc
+                  : isMt
                     ? "h-10 w-auto"
-                    : "h-9 w-auto"
+                    : isCellc
+                      ? "h-12 w-auto sm:h-14"
+                      : "h-9 w-auto"
               }
             />
             {isMtn ? (
@@ -128,19 +130,21 @@ export function PackagesPage({
             >
               {isRain ? "packages" : "Packages"}
             </a>
-            <Link
-              href="/image-studio"
-              className={cn(
-                "text-sm font-medium",
-                isMt || isCellc
-                  ? "text-white/75 hover:text-white"
-                  : isRain
-                    ? "lowercase text-muted-foreground hover:text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {isRain ? "image studio" : "Image Studio"}
-            </Link>
+            {!isCellc ? (
+              <Link
+                href="/image-studio"
+                className={cn(
+                  "text-sm font-medium",
+                  isMt
+                    ? "text-white/75 hover:text-white"
+                    : isRain
+                      ? "lowercase text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {isRain ? "image studio" : "Image Studio"}
+              </Link>
+            ) : null}
             <Link
               href="/pricing-studio"
               className={cn(
@@ -232,9 +236,11 @@ export function PackagesPage({
             <a href="#plans" className="block text-sm font-medium">
               Packages
             </a>
-            <Link href="/image-studio" className="block text-sm font-medium">
-              Image Studio
-            </Link>
+            {!isCellc ? (
+              <Link href="/image-studio" className="block text-sm font-medium">
+                Image Studio
+              </Link>
+            ) : null}
             <Link href="/pricing-studio" className="block text-sm font-medium">
               Pricing Studio
             </Link>
@@ -517,15 +523,17 @@ export function PackagesPage({
                 src={isMt || isCellc ? brand.logoOnDarkHref : brand.logoHref}
                 alt={brand.logoAlt}
                 width={
-                  isMtn ? 56 : isRain ? 90 : isMt ? 160 : isCellc ? 110 : 140
+                  isMtn ? 56 : isRain ? 90 : isMt ? 160 : isCellc ? 150 : 140
                 }
-                height={isMtn || isRain ? 28 : isMt || isCellc ? 36 : 32}
+                height={isMtn || isRain ? 28 : isMt ? 36 : isCellc ? 48 : 32}
                 className={
                   isMtn || isRain
                     ? "h-7 w-auto"
-                    : isMt || isCellc
+                    : isMt
                       ? "h-9 w-auto"
-                      : "h-8 w-auto"
+                      : isCellc
+                        ? "h-12 w-auto"
+                        : "h-8 w-auto"
                 }
               />
               {brand.id === "mtn" ? (
